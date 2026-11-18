@@ -1,0 +1,8 @@
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import SkinScanner from "@/components/SkinScanner";
+import Footer from "@/components/Footer";
+import { Activity, Camera, ClipboardCheck } from "lucide-react";
+export default function Home() {
+ return <><Navbar/><main><Hero/><section id="cara-kerja" className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><div className="mx-auto max-w-2xl text-center"><span className="text-xs font-bold tracking-[.2em] text-violet">PROSES SEDERHANA</span><h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink">Dari foto menjadi insight</h2><p className="mt-3 leading-7 text-slate-600">Alur Skinova dirancang agar pengguna memahami setiap tahap analisis.</p></div><div className="mt-10 grid gap-4 md:grid-cols-3">{[{icon:Camera,n:"01",t:"Ambil foto wajah",d:"Gunakan kamera atau unggah foto dengan pencahayaan yang baik."},{icon:ClipboardCheck,n:"02",t:"Pemeriksaan kualitas",d:"Sistem akan memeriksa apakah foto cukup jelas untuk diproses."},{icon:Activity,n:"03",t:"Analisis dan insight",d:"Model AI akan membantu mengenali indikasi kondisi kulit dan menampilkan informasi perawatan."}].map(x=><div key={x.n} className="rounded-2xl border border-violet-100 bg-white p-6"><div className="flex items-center justify-between"><span className="grid h-11 w-11 place-items-center rounded-xl bg-lilac text-violet"><x.icon size={21}/></span><span className="text-xs font-bold text-violet">{x.n}</span></div><h3 className="mt-5 font-semibold text-ink">{x.t}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{x.d}</p></div>)}</div></section><SkinScanner/></main><Footer/></>;
+}
