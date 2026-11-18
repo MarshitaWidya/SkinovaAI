@@ -1,9 +1,121 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { color-scheme: light; }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: #fbfaff; color: #17152b; font-family: Arial, Helvetica, sans-serif; }
-button, input { font: inherit; }
-::selection { background: #e7e0ff; color: #34256f; }
+
+:root {
+  color-scheme: light;
+
+  --cream: #faf9ee;
+  --sage: #a2af9b;
+  --beige: #dccfc0;
+  --soft-gray: #eeeeee;
+  --dark: #30352f;
+  --muted: #777d73;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--dark);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #dce4d7;
+  color: #30352f;
+}
+
+.font-editorial {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.section-label {
+  color: #788672;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.editorial-heading {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.soft-shadow {
+  box-shadow: 0 18px 55px rgba(68, 76, 62, 0.08);
+}
+
+.sage-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 999px;
+  background: #65765f;
+  color: white;
+  padding: 13px 23px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.sage-button:hover {
+  background: #4f604a;
+  transform: translateY(-2px);
+}
+
+.outline-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #d5d9cf;
+  border-radius: 999px;
+  background: transparent;
+  color: #41483e;
+  padding: 13px 23px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.outline-button:hover {
+  border-color: #87947f;
+  background: #f0f1e8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
