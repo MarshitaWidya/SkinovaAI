@@ -6,6 +6,7 @@ type Article = {
   title: string;
   category: string;
   readTime: string;
+  image: string;
   introduction: string;
   sections: {
     heading: string;
@@ -19,8 +20,9 @@ const articles: Article[] = [
   {
     slug: "jenis-permasalahan-kulit",
     title: "Mengenal Jenis Permasalahan Kulit dan Cara Mengidentifikasinya",
-    category: "Skin Concerns",
+    category: "Masalah Kulit",
     readTime: "6 menit",
+    image: "/image_edukasi/perawatan_kulit.jpg",
     introduction:
       "Setiap orang dapat memiliki kondisi kulit yang berbeda. Memahami tanda-tanda pada kulit merupakan langkah awal untuk menentukan perawatan yang sesuai.",
     sections: [
@@ -93,8 +95,9 @@ const articles: Article[] = [
   {
     slug: "salicylic-acid",
     title: "Salicylic Acid: Solusi untuk Kulit Berjerawat dan Berminyak",
-    category: "Skincare Ingredients",
+    category: "Bahan-bahan Skincare",
     readTime: "5 menit",
+    image: "/image_edukasi/salicylic_acid.jpg",
     introduction:
       "Salicylic Acid merupakan salah satu bahan aktif yang sering digunakan dalam produk perawatan kulit, terutama untuk membantu merawat kulit berminyak dan rentan berjerawat.",
     sections: [
@@ -136,8 +139,9 @@ const articles: Article[] = [
   {
     slug: "basic-skincare",
     title: "Panduan Basic Skincare untuk Pemula",
-    category: "Skincare Routine",
+    category: "Rutinitas Perawatan Kulit",
     readTime: "4 menit",
+    image: "/image_edukasi/dasar_skincare.jpg",
     introduction:
       "Memulai rutinitas skincare tidak harus menggunakan banyak produk. Rutinitas sederhana dan konsisten dapat menjadi langkah awal dalam menjaga kesehatan kulit.",
     sections: [
@@ -182,8 +186,9 @@ const articles: Article[] = [
   {
     slug: "perawatan-kulit-berjerawat",
     title: "Cara Merawat Kulit Berjerawat dengan Tepat",
-    category: "Skin Concerns",
+    category: "Masalah Kulit",
     readTime: "7 menit",
+    image: "/image_edukasi/perawatan_kulit2.jpg",
     introduction:
       "Kulit berjerawat membutuhkan perawatan yang konsisten dan tidak berlebihan. Memahami kebiasaan yang tepat dapat membantu menjaga kondisi kulit.",
     sections: [
@@ -229,8 +234,9 @@ const articles: Article[] = [
   {
     slug: "niacinamide",
     title: "Niacinamide dan Manfaatnya untuk Kesehatan Kulit",
-    category: "Skincare Ingredients",
+    category: "Bahan-Bahan Skincare",
     readTime: "5 menit",
+    image: "/image_edukasi/niacinamide.jpg",
     introduction:
       "Niacinamide merupakan salah satu bentuk vitamin B3 yang banyak digunakan dalam produk skincare. Kandungan ini dikenal karena manfaatnya dalam mendukung kesehatan dan fungsi pelindung kulit.",
     sections: [
@@ -271,8 +277,9 @@ const articles: Article[] = [
   {
     slug: "skin-barrier",
     title: "Skin Barrier: Fungsi dan Cara Menjaganya",
-    category: "Skin Health",
+    category: "Kesehatan Kulit",
     readTime: "6 menit",
+    image: "/image_edukasi/skinbarrier.jpg",
     introduction:
       "Skin barrier merupakan lapisan pelindung kulit yang membantu menjaga kelembapan dan melindungi kulit dari faktor lingkungan. Menjaganya merupakan bagian penting dari rutinitas skincare.",
     sections: [
@@ -342,9 +349,12 @@ export default async function ArticleDetailPage({
         <div className="mx-auto max-w-4xl">
           <Link
             href="/education"
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#68735E] transition hover:text-[#414B3D]"
+            className="group inline-flex items-center gap-2 rounded-full border border-[#DADDD3] bg-white px-5 py-2.5 text-sm font-medium text-[#566251] shadow-sm transition-all duration-300 hover:border-[#566251] hover:bg-[#566251] hover:text-white"
           >
-            ← Kembali ke Education
+            <span className="transition-transform duration-300 group-hover:-translate-x-1">
+              ←
+            </span>
+            Kembali ke Edukasi
           </Link>
 
           <div className="mt-10">
@@ -361,7 +371,7 @@ export default async function ArticleDetailPage({
             </p>
 
             <div className="mt-6 flex items-center gap-3 text-xs text-[#898B81]">
-              <span>Skinova Education</span>
+              <span>Edukasi Skinova</span>
               <span>•</span>
               <span>{article.readTime} membaca</span>
             </div>
@@ -372,15 +382,13 @@ export default async function ArticleDetailPage({
       {/* ARTICLE CONTENT */}
       <section className="px-5 pb-16 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-4xl">
-          <div className="mb-10 flex min-h-52 items-center justify-center overflow-hidden rounded-[2rem] bg-[#E8E8DF]">
-            <div className="text-center">
-              <span className="font-serif text-5xl text-[#566251]">
-                Skinova
-              </span>
-              <p className="mt-3 text-xs uppercase tracking-[0.2em] text-[#75816B]">
-                Skin Knowledge
-              </p>
-            </div>
+          {/* ARTICLE HERO IMAGE */}
+          <div className="mb-10 h-52 w-full overflow-hidden rounded-[2rem] bg-[#E8E8DF] sm:h-96 lg:h-[28rem]">
+            <img
+              src={article.image}
+              alt={`Foto ilustrasi ${article.title}`}
+              className="h-full w-full object-cover object-center"
+            />
           </div>
 
           <article className="rounded-3xl border border-[#E8E5DE] bg-white p-6 sm:p-10">
@@ -427,7 +435,7 @@ export default async function ArticleDetailPage({
       <section className="bg-[#F0F0E9] px-5 py-14 sm:px-8 lg:px-16 lg:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#89917E]">
-            Recommended for You
+            Rekomendasi Untuk Anda
           </p>
 
           <h2 className="mt-2 font-serif text-3xl sm:text-4xl">
@@ -473,7 +481,7 @@ export default async function ArticleDetailPage({
             <div className="grid items-center gap-8 lg:grid-cols-2">
               <div>
                 <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#E2E8DD]">
-                  Skinova AI Personalization
+                  Personalisasi AI Skinova
                 </span>
 
                 <h2 className="mt-5 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">

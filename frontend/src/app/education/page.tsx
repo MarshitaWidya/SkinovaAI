@@ -20,8 +20,8 @@ const articles = [
     readTime: "5 menit membaca",
     description:
       "Kenali berbagai jenis kulit wajah dan permasalahan yang sering terjadi agar kamu dapat menentukan perawatan yang tepat.",
-    image: "/images/jenis-permasalahan-kulit.jpg",
-    imageAlt: "Ilustrasi berbagai kondisi kulit wajah",
+    image: "/image_edukasi/perawatan_kulit.jpg",
+    imageAlt: "Ilustrasi permasalahan kulit wajah",
   },
   {
     slug: "salicylic-acid",
@@ -30,8 +30,8 @@ const articles = [
     readTime: "4 menit membaca",
     description:
       "Pelajari cara kerja Salicylic Acid dalam membantu membersihkan pori-pori dan merawat kulit yang rentan berjerawat.",
-    image: "/images/salicylic-acid.jpg",
-    imageAlt: "Ilustrasi produk Salicylic Acid",
+    image: "/image_edukasi/salicylic_acid.jpg",
+    imageAlt: "Serum Salicylic Acid dengan latar beige",
   },
   {
     slug: "basic-skincare",
@@ -40,7 +40,7 @@ const articles = [
     readTime: "6 menit membaca",
     description:
       "Pahami tiga langkah dasar skincare yang penting untuk menjaga kebersihan dan kesehatan kulit wajah.",
-    image: "/images/basic-skincare.jpg",
+    image: "/image_edukasi/dasar_skincare.jpg",
     imageAlt: "Rangkaian produk basic skincare",
   },
   {
@@ -50,7 +50,7 @@ const articles = [
     readTime: "5 menit membaca",
     description:
       "Temukan kebiasaan perawatan yang dapat membantu menjaga kulit berjerawat agar tetap bersih dan terawat.",
-    image: "/images/perawatan-kulit-berjerawat.jpg",
+    image: "/image_edukasi/perawatan_kulit2.jpg",
     imageAlt: "Ilustrasi perawatan wajah berjerawat",
   },
   {
@@ -60,7 +60,7 @@ const articles = [
     readTime: "4 menit membaca",
     description:
       "Kenali manfaat Niacinamide untuk membantu menjaga kelembapan, merawat tampilan warna kulit, dan mendukung skin barrier.",
-    image: "/images/niacinamide.jpg",
+    image: "/image_edukasi/niacinamide.jpg",
     imageAlt: "Ilustrasi serum Niacinamide",
   },
   {
@@ -70,7 +70,7 @@ const articles = [
     readTime: "5 menit membaca",
     description:
       "Pelajari fungsi skin barrier, tanda-tanda kerusakannya, serta cara sederhana untuk menjaga lapisan pelindung kulit.",
-    image: "/images/skin-barrier.jpg",
+    image: "/image_edukasi/skinbarrier.jpg",
     imageAlt: "Ilustrasi lapisan pelindung kulit",
   },
 ];
