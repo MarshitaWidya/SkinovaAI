@@ -12,6 +12,10 @@ import {
   VideoOff,
   LoaderCircle,
   XCircle,
+  ShoppingBag,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 import {
@@ -20,6 +24,7 @@ import {
   type ValidationResult,
   type SkinAnalysis,
   type SkinRecommendation,
+  type ProductRecommendation,
   type QuestionnaireAnswers,
 } from "@/lib/api";
 
@@ -108,6 +113,199 @@ function RecommendationCard({
             </li>
           ))}
         </ul>
+      </div>
+    </div>
+  );
+}
+
+function ProductCard({ product }: { product: ProductRecommendation }) {
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(product.price);
+
+  return (
+    <div className="group h-full overflow-hidden rounded-2xl border border-violet-100 bg-white transition hover:border-violet-300 hover:shadow-md">
+      {/* PRODUCT IMAGE */}
+      <div className="relative flex h-44 items-center justify-center overflow-hidden bg-violet-50">
+        {product.image_url ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="h-full w-full object-contain p-4 transition duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex flex-col items-center gap-2 text-violet-300">
+            <ShoppingBag size={42} strokeWidth={1.5} />
+            <span className="text-xs font-medium">
+              Gambar produk belum tersedia
+            </span>
+          </div>
+        )}
+
+        <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[10px] font-semibold text-violet-700 shadow-sm">
+          {product.category}
+        </span>
+      </div>
+
+      {/* PRODUCT INFORMATION */}
+      <div className="p-4">
+        <p className="text-xs font-medium text-violet-600">{product.brand}</p>
+
+        <h4 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">
+          {product.name}
+        </h4>
+
+        <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">
+          {product.description}
+        </p>
+
+        {/* MATCHING INGREDIENTS */}
+        {product.matching_ingredients.length > 0 && (
+          <div className="mt-4">
+            <p className="text-[11px] font-semibold text-slate-600">
+              Kandungan yang sesuai
+            </p>
+
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {product.matching_ingredients.map((ingredient) => (
+                <span
+                  key={ingredient}
+                  className="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-medium text-violet-700"
+                >
+                  {ingredient}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* PRICE */}
+        <div className="mt-4 border-t border-slate-100 pt-3">
+          <p className="text-[11px] text-slate-400">Harga katalog</p>
+
+          <p className="mt-1 text-base font-bold text-ink">{formattedPrice}</p>
+        </div>
+
+        {/* PRODUCT LINK */}
+        {product.product_url ? (
+          <a
+            href={product.product_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-violet px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-violet-700"
+          >
+            Lihat Produk
+            <ExternalLink size={14} />
+          </a>
+        ) : (
+          <div className="mt-4 rounded-full bg-slate-100 px-4 py-2.5 text-center text-xs font-medium text-slate-400">
+            Tautan produk belum tersedia
+          </div>
+        )}
+
+        {product.marketplace && (
+          <p className="mt-2 text-center text-[10px] text-slate-400">
+            Tersedia di {product.marketplace}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProductCarousel({ products }: { products: ProductRecommendation[] }) {
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const scrollCarousel = (direction: "left" | "right") => {
+    const container = carouselRef.current;
+
+    if (!container) return;
+
+    const firstCard = container.firstElementChild as HTMLElement | null;
+    const cardWidth = firstCard?.offsetWidth ?? 300;
+    const gap = 16;
+
+    container.scrollBy({
+      left: direction === "right" ? cardWidth + gap : -(cardWidth + gap),
+      behavior: "smooth",
+    });
+  };
+
+  if (products.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-violet-200 bg-violet-50/50 p-6 text-center">
+        <ShoppingBag className="mx-auto mb-3 text-violet-400" size={30} />
+        <p className="text-sm font-semibold text-ink">
+          Belum ada produk yang sesuai
+        </p>
+        <p className="mt-2 text-xs leading-5 text-slate-500">
+          Belum ditemukan produk dalam katalog yang cocok dengan rekomendasi
+          kandungan dari hasil analisis.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {/* HEADER */}
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <ShoppingBag className="text-violet-600" size={20} />
+            <h3 className="font-semibold text-ink">
+              Rekomendasi Produk Skincare
+            </h3>
+          </div>
+
+          <p className="mt-2 text-xs leading-5 text-slate-500">
+            Produk dipilih berdasarkan kecocokan kandungan dengan rekomendasi
+            perawatan dan jenis kulitmu.
+          </p>
+        </div>
+
+        {/* NAVIGATION */}
+        {products.length > 3 && (
+          <div className="flex shrink-0 items-center gap-2">
+            <button
+              type="button"
+              onClick={() => scrollCarousel("left")}
+              aria-label="Produk sebelumnya"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-200 text-violet-600 transition hover:bg-violet-50"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollCarousel("right")}
+              aria-label="Produk berikutnya"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-200 text-violet-600 transition hover:bg-violet-50"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* CAROUSEL */}
+      <div
+        ref={carouselRef}
+        className="flex gap-4 overflow-x-auto scroll-smooth pb-3 snap-x snap-mandatory"
+        style={{
+          scrollbarWidth: "none",
+        }}
+      >
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className="w-full flex-none snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+          >
+            <ProductCard product={product} />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -951,215 +1149,225 @@ export default function SkinScanner() {
             )}
 
             {activeTab === "results" && analysis && (
-              <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-                {/* KOLOM KIRI: HASIL ANALISIS + FOTO DETEKSI */}
-                <div className="rounded-2xl border border-violet-100 bg-white p-5">
-                  {/* FOTO WAJAH DENGAN BOUNDING BOX YOLO */}
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-6">
-                      <Sparkles className="text-violet-600" size={20} />
-                      <h3 className="font-semibold text-ink">
-                        Hasil Deteksi Pada Wajah
-                      </h3>
-                    </div>
-
-                    {preview && (
-                      <div className="relative mx-auto h-[360px] w-full max-w-md overflow-hidden rounded-2xl bg-[#17152b]">
-                        <img
-                          src={preview}
-                          alt="Foto wajah hasil analisis Skinova AI"
-                          className="absolute inset-0 h-full w-full object-contain"
-                        />
-
-                        <svg
-                          className="pointer-events-none absolute inset-0 h-full w-full"
-                          viewBox={`0 0 ${analysis.image_width} ${analysis.image_height}`}
-                          preserveAspectRatio="xMidYMid meet"
-                        >
-                          {analysis.detections.map((detection, index) => {
-                            const box = detection.bounding_box;
-
-                            return (
-                              <g key={index}>
-                                <rect
-                                  x={box.x1}
-                                  y={box.y1}
-                                  width={box.x2 - box.x1}
-                                  height={box.y2 - box.y1}
-                                  fill="rgba(124, 58, 237, 0.12)"
-                                  stroke="#a78bfa"
-                                  strokeWidth="3"
-                                  vectorEffect="non-scaling-stroke"
-                                />
-                              </g>
-                            );
-                          })}
-                        </svg>
-                      </div>
-                    )}
-
-                    <p className="mt-2 text-center text-xs text-slate-400">
-                      Area kotak menunjukkan lokasi kondisi kulit yang
-                      terdeteksi oleh AI.
-                    </p>
-                  </div>
-                  {/* JUDUL HASIL ANALISIS */}
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="text-violet-600" size={20} />
-                    <h3 className="font-semibold text-ink">
-                      Hasil Analisis Skinova AI
-                    </h3>
-                  </div>
-                  <div className="mt-4 grid grid-cols-2 gap-3">
-                    <div className="rounded-xl bg-violet-50 p-3">
-                      <p className="text-xs text-slate-500">Total deteksi</p>
-                      <p className="mt-1 text-2xl font-bold text-violet-700">
-                        {analysis.total_detections}
-                      </p>
-                    </div>
-
-                    <div className="rounded-xl bg-slate-50 p-3">
-                      <p className="text-xs text-slate-500">Perangkat AI</p>
-                      <p className="mt-1 text-lg font-bold text-ink">
-                        {analysis.device}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="mt-5">
-                    <p className="mb-3 text-sm font-semibold text-ink">
-                      Kondisi kulit terdeteksi
-                    </p>
-
-                    {analysis.total_detections === 0 ? (
-                      <p className="rounded-xl bg-slate-50 p-4 text-xs leading-5 text-slate-600">
-                        Belum ditemukan objek yang terdeteksi oleh model AI. Hal
-                        ini tidak berarti kulit pasti bebas dari masalah.
-                      </p>
-                    ) : (
-                      <div className="space-y-3">
-                        {Object.entries(analysis.summary).map(
-                          ([name, data]) => (
-                            <div
-                              key={name}
-                              className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3"
-                            >
-                              <div>
-                                <p className="text-sm font-semibold capitalize text-ink">
-                                  {name.replaceAll("_", " ")}
-                                </p>
-                                <p className="mt-1 text-xs text-slate-500">
-                                  {data.count} objek terdeteksi
-                                </p>
-                              </div>
-
-                              <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-                                {(data.highest_confidence * 100).toFixed(1)}%
-                              </span>
-                            </div>
-                          ),
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {/* QUESTIONNAIRE PERSONALIZATION */}
-                  {analysis.questionnaire_context && (
-                    <div className="mt-6 rounded-2xl border border-violet-100 bg-violet-50 p-4">
-                      <div className="flex items-center gap-2">
-                        <Sparkles size={18} className="text-violet-600" />
-                        <h4 className="text-sm font-semibold text-violet-900">
-                          Personalisasi Berdasarkan Kuesioner
-                        </h4>
+              <div className="space-y-8">
+                {/* GRID HASIL ANALISIS */}
+                <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
+                  {/* KOLOM KIRI: HASIL ANALISIS + FOTO DETEKSI */}
+                  <div className="rounded-2xl border border-violet-100 bg-white p-5">
+                    {/* FOTO WAJAH DENGAN BOUNDING BOX YOLO */}
+                    <div className="mb-6">
+                      <div className="flex items-center gap-2 mb-6">
+                        <Sparkles className="text-violet-600" size={20} />
+                        <h3 className="font-semibold text-ink">
+                          Hasil Deteksi Pada Wajah
+                        </h3>
                       </div>
 
-                      <div className="mt-3">
-                        <p className="text-xs text-slate-500">Jenis kulit</p>
-                        <p className="mt-1 text-sm font-semibold text-ink">
-                          {analysis.questionnaire_context.skin_type}
-                        </p>
-                      </div>
+                      {preview && (
+                        <div className="relative mx-auto h-[360px] w-full max-w-md overflow-hidden rounded-2xl bg-[#17152b]">
+                          <img
+                            src={preview}
+                            alt="Foto wajah hasil analisis Skinova AI"
+                            className="absolute inset-0 h-full w-full object-contain"
+                          />
 
-                      {analysis.questionnaire_context.existing_ingredients
-                        .length > 0 && (
-                        <div className="mt-3">
-                          <p className="text-xs text-slate-500">
-                            Kandungan yang sudah digunakan
-                          </p>
+                          <svg
+                            className="pointer-events-none absolute inset-0 h-full w-full"
+                            viewBox={`0 0 ${analysis.image_width} ${analysis.image_height}`}
+                            preserveAspectRatio="xMidYMid meet"
+                          >
+                            {analysis.detections.map((detection, index) => {
+                              const box = detection.bounding_box;
 
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {analysis.questionnaire_context.existing_ingredients.map(
-                              (ingredient) => (
-                                <span
-                                  key={ingredient}
-                                  className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-violet-700"
-                                >
-                                  {ingredient}
-                                </span>
-                              ),
-                            )}
-                          </div>
+                              return (
+                                <g key={index}>
+                                  <rect
+                                    x={box.x1}
+                                    y={box.y1}
+                                    width={box.x2 - box.x1}
+                                    height={box.y2 - box.y1}
+                                    fill="rgba(124, 58, 237, 0.12)"
+                                    stroke="#a78bfa"
+                                    strokeWidth="3"
+                                    vectorEffect="non-scaling-stroke"
+                                  />
+                                </g>
+                              );
+                            })}
+                          </svg>
                         </div>
                       )}
 
-                      <div className="mt-4 space-y-2">
-                        {analysis.questionnaire_context.notes.map(
-                          (note, index) => (
-                            <p
-                              key={index}
-                              className="flex gap-2 text-xs leading-5 text-slate-600"
-                            >
-                              <CheckCircle2
-                                size={15}
-                                className="mt-0.5 shrink-0 text-violet-600"
-                              />
-                              {note}
-                            </p>
-                          ),
-                        )}
+                      <p className="mt-2 text-center text-xs text-slate-400">
+                        Area kotak menunjukkan lokasi kondisi kulit yang
+                        terdeteksi oleh AI.
+                      </p>
+                    </div>
+                    {/* JUDUL HASIL ANALISIS */}
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="text-violet-600" size={20} />
+                      <h3 className="font-semibold text-ink">
+                        Hasil Analisis Skinova AI
+                      </h3>
+                    </div>
+                    <div className="mt-4 grid grid-cols-2 gap-3">
+                      <div className="rounded-xl bg-violet-50 p-3">
+                        <p className="text-xs text-slate-500">Total deteksi</p>
+                        <p className="mt-1 text-2xl font-bold text-violet-700">
+                          {analysis.total_detections}
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl bg-slate-50 p-3">
+                        <p className="text-xs text-slate-500">Perangkat AI</p>
+                        <p className="mt-1 text-lg font-bold text-ink">
+                          {analysis.device}
+                        </p>
                       </div>
                     </div>
-                  )}
-                </div>
-                {/* KOLOM KANAN: REKOMENDASI PERAWATAN */}
-                <div className="rounded-2xl border border-violet-100 bg-white p-5">
-                  {/* SKINCARE RECOMMENDATIONS */}
-                  {analysis.recommendations &&
-                    analysis.recommendations.length > 0 && (
-                      <div className="mt-6">
-                        <div className="mb-4">
-                          <div className="flex items-center gap-2">
-                            <Sparkles className="text-violet-600" size={20} />
+                    <div className="mt-5">
+                      <p className="mb-3 text-sm font-semibold text-ink">
+                        Kondisi kulit terdeteksi
+                      </p>
 
-                            <h3 className="font-semibold text-ink">
-                              Rekomendasi Perawatan Kulit
-                            </h3>
-                          </div>
+                      {analysis.total_detections === 0 ? (
+                        <p className="rounded-xl bg-slate-50 p-4 text-xs leading-5 text-slate-600">
+                          Belum ditemukan objek yang terdeteksi oleh model AI.
+                          Hal ini tidak berarti kulit pasti bebas dari masalah.
+                        </p>
+                      ) : (
+                        <div className="space-y-3">
+                          {Object.entries(analysis.summary).map(
+                            ([name, data]) => (
+                              <div
+                                key={name}
+                                className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3"
+                              >
+                                <div>
+                                  <p className="text-sm font-semibold capitalize text-ink">
+                                    {name.replaceAll("_", " ")}
+                                  </p>
+                                  <p className="mt-1 text-xs text-slate-500">
+                                    {data.count} objek terdeteksi
+                                  </p>
+                                </div>
 
-                          <p className="mt-2 text-xs leading-5 text-slate-500">
-                            Rekomendasi berikut disesuaikan dengan kategori
-                            permasalahan kulit yang terdeteksi oleh Skinova AI.
+                                <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
+                                  {(data.highest_confidence * 100).toFixed(1)}%
+                                </span>
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {/* QUESTIONNAIRE PERSONALIZATION */}
+                    {analysis.questionnaire_context && (
+                      <div className="mt-6 rounded-2xl border border-violet-100 bg-violet-50 p-4">
+                        <div className="flex items-center gap-2">
+                          <Sparkles size={18} className="text-violet-600" />
+                          <h4 className="text-sm font-semibold text-violet-900">
+                            Personalisasi Berdasarkan Kuesioner
+                          </h4>
+                        </div>
+
+                        <div className="mt-3">
+                          <p className="text-xs text-slate-500">Jenis kulit</p>
+                          <p className="mt-1 text-sm font-semibold text-ink">
+                            {analysis.questionnaire_context.skin_type}
                           </p>
                         </div>
 
-                        <div className="space-y-4">
-                          {analysis.recommendations.map((recommendation) => (
-                            <RecommendationCard
-                              key={recommendation.title}
-                              recommendation={recommendation}
-                            />
-                          ))}
+                        {analysis.questionnaire_context.existing_ingredients
+                          .length > 0 && (
+                          <div className="mt-3">
+                            <p className="text-xs text-slate-500">
+                              Kandungan yang sudah digunakan
+                            </p>
+
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {analysis.questionnaire_context.existing_ingredients.map(
+                                (ingredient) => (
+                                  <span
+                                    key={ingredient}
+                                    className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-violet-700"
+                                  >
+                                    {ingredient}
+                                  </span>
+                                ),
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="mt-4 space-y-2">
+                          {analysis.questionnaire_context.notes.map(
+                            (note, index) => (
+                              <p
+                                key={index}
+                                className="flex gap-2 text-xs leading-5 text-slate-600"
+                              >
+                                <CheckCircle2
+                                  size={15}
+                                  className="mt-0.5 shrink-0 text-violet-600"
+                                />
+                                {note}
+                              </p>
+                            ),
+                          )}
                         </div>
                       </div>
                     )}
-                  <div className="mt-5 rounded-xl border border-amber-100 bg-amber-50 p-3">
-                    <p className="text-xs leading-5 text-amber-800">
-                      Hasil ini merupakan estimasi berdasarkan deteksi AI dan
-                      bukan diagnosis medis. Akurasi hasil masih perlu
-                      dievaluasi lebih lanjut.
+                  </div>
+                  {/* KOLOM KANAN: REKOMENDASI PERAWATAN */}
+                  <div className="rounded-2xl border border-violet-100 bg-white p-5">
+                    {/* SKINCARE RECOMMENDATIONS */}
+                    {analysis.recommendations &&
+                      analysis.recommendations.length > 0 && (
+                        <div className="mt-6">
+                          <div className="mb-4">
+                            <div className="flex items-center gap-2">
+                              <Sparkles className="text-violet-600" size={20} />
+
+                              <h3 className="font-semibold text-ink">
+                                Rekomendasi Perawatan Kulit
+                              </h3>
+                            </div>
+
+                            <p className="mt-2 text-xs leading-5 text-slate-500">
+                              Rekomendasi berikut disesuaikan dengan kategori
+                              permasalahan kulit yang terdeteksi oleh Skinova
+                              AI.
+                            </p>
+                          </div>
+
+                          <div className="space-y-4">
+                            {analysis.recommendations.map((recommendation) => (
+                              <RecommendationCard
+                                key={recommendation.title}
+                                recommendation={recommendation}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    <div className="mt-5 rounded-xl border border-amber-100 bg-amber-50 p-3">
+                      <p className="text-xs leading-5 text-amber-800">
+                        Hasil ini merupakan estimasi berdasarkan deteksi AI dan
+                        bukan diagnosis medis. Akurasi hasil masih perlu
+                        dievaluasi lebih lanjut.
+                      </p>
+                    </div>
+                    <p className="mt-3 text-[11px] text-slate-400">
+                      Model: {analysis.model}
                     </p>
                   </div>
-                  <p className="mt-3 text-[11px] text-slate-400">
-                    Model: {analysis.model}
-                  </p>
+                </div>
+                {/* PRODUCT RECOMMENDATIONS - FULL WIDTH */}
+                <div className="mt-8 border-t border-slate-100 pt-7">
+                  <ProductCarousel
+                    products={analysis.product_recommendations ?? []}
+                  />
                   <div className="mt-6 flex flex-col gap-3">
                     <button
                       type="button"

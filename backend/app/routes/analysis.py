@@ -115,7 +115,6 @@ async def analyze_skin(
             get_product_recommendations(
                 recommendations=analysis.get("recommendations", []),
                 skin_type=questionnaire_data.get("skin_type", "unknown"),
-                limit=6,
             )
         )
 

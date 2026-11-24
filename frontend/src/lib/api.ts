@@ -58,6 +58,30 @@ export interface SkinRecommendation {
   avoid: string[];
 }
 
+export interface ProductRecommendation {
+  id: string;
+  name: string;
+  brand: string;
+  category: string;
+  description: string;
+
+  ingredients: string[];
+  skin_types: string[];
+  suitable_conditions: string[];
+
+  price: number;
+
+  image_url?: string | null;
+  marketplace?: string | null;
+  product_url?: string | null;
+
+  is_active: boolean;
+
+  matching_ingredients: string[];
+  matching_conditions: string[];
+  match_score: number;
+}
+
 export interface QuestionnaireAnswers {
   habits: string[];
   skin_type: string;
@@ -91,9 +115,12 @@ export interface SkinAnalysis {
 
   recommendations?: SkinRecommendation[];
 
+  product_recommendations?: ProductRecommendation[];
+
   questionnaire_context?: QuestionnaireContext;
   ingredient_warnings?: string[];
 }
+
 export interface AnalysisResponse {
   success: boolean;
   message: string;
