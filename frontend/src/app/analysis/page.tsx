@@ -11,8 +11,6 @@ export const metadata = {
 export default function AnalysisPage() {
   return (
     <>
-      <Navbar />
-
       <main>
         <SkinScanner />
       </main>
