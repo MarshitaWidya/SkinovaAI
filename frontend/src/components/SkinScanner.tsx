@@ -129,6 +129,9 @@ export default function SkinScanner() {
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  type AnalysisTab = "photo" | "questionnaire" | "results";
+
+  const [activeTab, setActiveTab] = useState<AnalysisTab>("photo");
 
   const [questionnaire, setQuestionnaire] = useState<QuestionnaireAnswers>({
     habits: [],
@@ -230,8 +233,11 @@ export default function SkinScanner() {
       // Simpan foto yang sudah lolos validasi
       setSelectedImage(file);
 
-      // Tampilkan kuesioner
+      // Aktifkan kuesioner
       setShowQuestionnaire(true);
+
+      // Pindah ke tab kuesioner
+      setActiveTab("questionnaire");
 
       setMessage("Foto valid. Silakan lengkapi kuesioner sebelum analisis.");
     } catch (error) {
@@ -254,6 +260,7 @@ export default function SkinScanner() {
 
     setAnalyzing(true);
     setMessage("Skinova AI sedang menganalisis kondisi kulit...");
+    setActiveTab("results");
 
     try {
       const analysisResult = await analyzeSkinImage(
@@ -265,6 +272,7 @@ export default function SkinScanner() {
         setMessage(
           analysisResult.message || "Analisis kulit belum berhasil dilakukan.",
         );
+        setActiveTab("questionnaire");
         return;
       }
 
@@ -335,6 +343,7 @@ export default function SkinScanner() {
     setAnalyzing(false);
     setSelectedImage(null);
     setShowQuestionnaire(false);
+    setActiveTab("photo");
 
     setQuestionnaire({
       habits: [],
@@ -413,447 +422,510 @@ export default function SkinScanner() {
         </div>
 
         <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1.1fr_.9fr]">
-          {/* SCANNER */}
           <div className="rounded-3xl border border-white bg-white p-4 shadow-soft sm:p-6">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-ink">Face scanner</p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Pilih metode pengambilan gambar
-                </p>
-              </div>
-
-              <span className="rounded-full bg-violet-50 px-3 py-1.5 text-[11px] font-semibold text-violet-700">
-                Tahap 2 · Image Validation
-              </span>
-            </div>
-
-            {/* MODE */}
-            <div className="mb-4 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
+            {/* TAB NAVIGATION */}
+            <div className="mb-6 grid grid-cols-3 gap-2 rounded-xl bg-slate-100 p-1">
               <button
-                onClick={() => changeMode("camera")}
-                className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
-                  mode === "camera"
+                type="button"
+                onClick={() => setActiveTab("photo")}
+                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
+                  activeTab === "photo"
                     ? "bg-white text-violet shadow-sm"
-                    : "text-slate-500"
+                    : "text-slate-500 hover:text-violet"
                 }`}
               >
-                <Camera size={16} />
-                Kamera
+                01. Scan Wajah
               </button>
 
               <button
-                onClick={() => changeMode("upload")}
-                className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
-                  mode === "upload"
+                type="button"
+                disabled={!showQuestionnaire || !validation?.valid}
+                onClick={() => setActiveTab("questionnaire")}
+                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
+                  activeTab === "questionnaire"
                     ? "bg-white text-violet shadow-sm"
                     : "text-slate-500"
-                }`}
+                } disabled:cursor-not-allowed disabled:opacity-40`}
               >
-                <ImagePlus size={16} />
-                Upload foto
+                02. Kuesioner
+              </button>
+
+              <button
+                type="button"
+                disabled={!analysis && !analyzing}
+                onClick={() => setActiveTab("results")}
+                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
+                  activeTab === "results"
+                    ? "bg-white text-violet shadow-sm"
+                    : "text-slate-500"
+                } disabled:cursor-not-allowed disabled:opacity-40`}
+              >
+                03. Hasil
               </button>
             </div>
+            {activeTab === "photo" && (
+              <>
+                {/* SCANNER */}
+                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-ink">
+                      Face scanner
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Pilih metode pengambilan gambar
+                    </p>
+                  </div>
 
-            {/* IMAGE PREVIEW */}
-            <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#17152b]">
-              {preview ? (
-                <div className="absolute inset-0">
-                  <img
-                    src={preview}
-                    alt="Preview foto wajah"
-                    className="h-full w-full object-contain"
-                  />
-
-                  {analysis && (
-                    <svg
-                      className="pointer-events-none absolute inset-0 h-full w-full"
-                      viewBox={`0 0 ${analysis.image_width} ${analysis.image_height}`}
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      {analysis.detections.map((detection, index) => {
-                        const box = detection.bounding_box;
-
-                        return (
-                          <g key={index}>
-                            <rect
-                              x={box.x1}
-                              y={box.y1}
-                              width={box.x2 - box.x1}
-                              height={box.y2 - box.y1}
-                              fill="rgba(124, 58, 237, 0.12)"
-                              stroke="#a78bfa"
-                              strokeWidth="3"
-                              vectorEffect="non-scaling-stroke"
-                            />
-                          </g>
-                        );
-                      })}
-                    </svg>
-                  )}
+                  <span className="rounded-full bg-violet-50 px-3 py-1.5 text-[11px] font-semibold text-violet-700">
+                    Tahap 2 · Image Validation
+                  </span>
                 </div>
-              ) : mode === "camera" ? (
-                <>
-                  <video
-                    ref={videoRef}
-                    muted
-                    playsInline
-                    className={`absolute inset-0 h-full w-full object-cover ${
-                      streaming ? "scale-x-[-1]" : "hidden"
-                    }`}
-                  />
 
-                  {!streaming && (
-                    <div className="px-8 text-center text-white">
-                      <Camera
-                        className="mx-auto mb-3 text-violet-200"
-                        size={34}
-                      />
-
-                      <p className="font-semibold">Kamera belum diaktifkan</p>
-
-                      <p className="mt-2 text-xs leading-5 text-slate-300">
-                        Klik tombol Aktifkan kamera untuk memulai pemindaian.
-                      </p>
-                    </div>
-                  )}
-
-                  {streaming && (
-                    <div className="pointer-events-none absolute inset-[12%] rounded-[45%] border-2 border-dashed border-white/80" />
-                  )}
-                </>
-              ) : (
-                <button
-                  onClick={() => fileRef.current?.click()}
-                  className="m-5 flex min-h-[250px] w-[calc(100%-2.5rem)] flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/30 px-6 text-white hover:bg-white/5"
-                >
-                  <Upload size={32} className="mb-3 text-violet-200" />
-
-                  <span className="font-semibold">
-                    Pilih foto dari perangkat
-                  </span>
-
-                  <span className="mt-2 text-xs text-slate-300">
-                    JPG, PNG, WEBP · Maksimal 8 MB
-                  </span>
-                </button>
-              )}
-            </div>
-
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              className="hidden"
-              onChange={(e) => onFile(e.target.files?.[0])}
-            />
-
-            {/* BUTTONS */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {preview ? (
-                <button
-                  onClick={reset}
-                  disabled={validating}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink disabled:opacity-50"
-                >
-                  <RefreshCw size={16} />
-                  Ambil ulang
-                </button>
-              ) : mode === "camera" ? (
-                !streaming ? (
+                {/* MODE */}
+                <div className="mb-4 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
                   <button
-                    onClick={startCamera}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                    onClick={() => changeMode("camera")}
+                    className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
+                      mode === "camera"
+                        ? "bg-white text-violet shadow-sm"
+                        : "text-slate-500"
+                    }`}
                   >
                     <Camera size={16} />
-                    Aktifkan kamera
+                    Kamera
                   </button>
-                ) : (
-                  <>
+
+                  <button
+                    onClick={() => changeMode("upload")}
+                    className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
+                      mode === "upload"
+                        ? "bg-white text-violet shadow-sm"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    <ImagePlus size={16} />
+                    Upload foto
+                  </button>
+                </div>
+
+                {/* IMAGE PREVIEW */}
+                <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#17152b]">
+                  {preview ? (
+                    <div className="absolute inset-0">
+                      <img
+                        src={preview}
+                        alt="Preview foto wajah"
+                        className="h-full w-full object-contain"
+                      />
+
+                      {analysis && (
+                        <svg
+                          className="pointer-events-none absolute inset-0 h-full w-full"
+                          viewBox={`0 0 ${analysis.image_width} ${analysis.image_height}`}
+                          preserveAspectRatio="xMidYMid meet"
+                        >
+                          {analysis.detections.map((detection, index) => {
+                            const box = detection.bounding_box;
+
+                            return (
+                              <g key={index}>
+                                <rect
+                                  x={box.x1}
+                                  y={box.y1}
+                                  width={box.x2 - box.x1}
+                                  height={box.y2 - box.y1}
+                                  fill="rgba(124, 58, 237, 0.12)"
+                                  stroke="#a78bfa"
+                                  strokeWidth="3"
+                                  vectorEffect="non-scaling-stroke"
+                                />
+                              </g>
+                            );
+                          })}
+                        </svg>
+                      )}
+                    </div>
+                  ) : mode === "camera" ? (
+                    <>
+                      <video
+                        ref={videoRef}
+                        muted
+                        playsInline
+                        className={`absolute inset-0 h-full w-full object-cover ${
+                          streaming ? "scale-x-[-1]" : "hidden"
+                        }`}
+                      />
+
+                      {!streaming && (
+                        <div className="px-8 text-center text-white">
+                          <Camera
+                            className="mx-auto mb-3 text-violet-200"
+                            size={34}
+                          />
+
+                          <p className="font-semibold">
+                            Kamera belum diaktifkan
+                          </p>
+
+                          <p className="mt-2 text-xs leading-5 text-slate-300">
+                            Klik tombol Aktifkan kamera untuk memulai
+                            pemindaian.
+                          </p>
+                        </div>
+                      )}
+
+                      {streaming && (
+                        <div className="pointer-events-none absolute inset-[12%] rounded-[45%] border-2 border-dashed border-white/80" />
+                      )}
+                    </>
+                  ) : (
                     <button
-                      onClick={capture}
+                      onClick={() => fileRef.current?.click()}
+                      className="m-5 flex min-h-[250px] w-[calc(100%-2.5rem)] flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/30 px-6 text-white hover:bg-white/5"
+                    >
+                      <Upload size={32} className="mb-3 text-violet-200" />
+
+                      <span className="font-semibold">
+                        Pilih foto dari perangkat
+                      </span>
+
+                      <span className="mt-2 text-xs text-slate-300">
+                        JPG, PNG, WEBP · Maksimal 8 MB
+                      </span>
+                    </button>
+                  )}
+                </div>
+
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  onChange={(e) => onFile(e.target.files?.[0])}
+                />
+
+                {/* BUTTONS */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {preview ? (
+                    <button
+                      onClick={reset}
+                      disabled={validating}
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink disabled:opacity-50"
+                    >
+                      <RefreshCw size={16} />
+                      Ambil ulang
+                    </button>
+                  ) : mode === "camera" ? (
+                    !streaming ? (
+                      <button
+                        onClick={startCamera}
+                        className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                      >
+                        <Camera size={16} />
+                        Aktifkan kamera
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          onClick={capture}
+                          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                        >
+                          <CheckCircle2 size={16} />
+                          Ambil foto
+                        </button>
+
+                        <button
+                          onClick={stopCamera}
+                          className="rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink"
+                        >
+                          <VideoOff size={16} />
+                        </button>
+                      </>
+                    )
+                  ) : (
+                    <button
+                      onClick={() => fileRef.current?.click()}
                       className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
                     >
-                      <CheckCircle2 size={16} />
-                      Ambil foto
+                      <Upload size={16} />
+                      Pilih gambar
+                    </button>
+                  )}
+                </div>
+
+                {/* STATUS */}
+                <div
+                  aria-live="polite"
+                  className="mt-4 text-center text-xs leading-5 text-slate-500"
+                >
+                  {validating ? (
+                    <span className="inline-flex items-center gap-2 text-violet-700">
+                      <LoaderCircle size={15} className="animate-spin" />
+                      Sedang memeriksa kualitas foto...
+                    </span>
+                  ) : (
+                    message
+                  )}
+                </div>
+
+                {fileName && (
+                  <p className="mt-1 truncate text-center text-[11px] text-slate-400">
+                    {fileName}
+                  </p>
+                )}
+
+                {/* VALIDATION RESULT */}
+                {validation && !validating && (
+                  <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                    <div className="flex items-center gap-2">
+                      {validation.valid ? (
+                        <CheckCircle2 className="text-green-600" size={20} />
+                      ) : (
+                        <XCircle className="text-red-500" size={20} />
+                      )}
+
+                      <h3 className="text-sm font-semibold text-ink">
+                        {validation.valid
+                          ? "Foto berhasil divalidasi"
+                          : "Foto belum memenuhi syarat"}
+                      </h3>
+                    </div>
+
+                    {/* CHECK DETAILS */}
+                    <div className="mt-4 space-y-3">
+                      {checks.map(
+                        (item) =>
+                          item.data && (
+                            <div
+                              key={item.name}
+                              className="flex items-center justify-between gap-3 text-xs"
+                            >
+                              <div className="flex items-center gap-2">
+                                {item.data.passed ? (
+                                  <CheckCircle2
+                                    size={15}
+                                    className="text-green-600"
+                                  />
+                                ) : (
+                                  <XCircle size={15} className="text-red-500" />
+                                )}
+
+                                <span className="font-medium text-slate-700">
+                                  {item.name}
+                                </span>
+                              </div>
+
+                              <span className="text-right text-slate-500">
+                                {item.detail}
+                              </span>
+                            </div>
+                          ),
+                      )}
+                    </div>
+
+                    {/* ERRORS */}
+                    {validation.errors.length > 0 && (
+                      <div className="mt-4 rounded-xl bg-red-50 p-3">
+                        <p className="mb-2 text-xs font-semibold text-red-700">
+                          Hal yang perlu diperbaiki:
+                        </p>
+
+                        {validation.errors.map((error, index) => (
+                          <p
+                            key={index}
+                            className="mb-1 text-xs leading-5 text-red-600"
+                          >
+                            • {error}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+
+                    {validation.valid && (
+                      <div className="mt-4 rounded-xl bg-green-50 p-3">
+                        <p className="text-xs leading-5 text-green-700">
+                          Foto berhasil melewati pemeriksaan kualitas. Silakan
+                          lengkapi kuesioner untuk melanjutkan ke analisis
+                          kulit.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+            {/* QUESTIONNAIRE */}
+            {activeTab === "questionnaire" &&
+              showQuestionnaire &&
+              validation?.valid && (
+                <div className="mt-5 rounded-2xl border border-violet-100 bg-white p-5">
+                  <div className="mb-5">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="text-violet-600" size={20} />
+                      <h3 className="font-semibold text-ink">
+                        Kenali Kondisi Kulitmu
+                      </h3>
+                    </div>
+
+                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                      Jawab beberapa pertanyaan berikut agar rekomendasi
+                      perawatan dapat disesuaikan dengan kebiasaan dan rutinitas
+                      skincare-mu.
+                    </p>
+                  </div>
+
+                  {/* KEBIASAAN */}
+                  <div className="mb-6">
+                    <h4 className="mb-3 text-sm font-semibold text-ink">
+                      1. Bagaimana kebiasaanmu sehari-hari?
+                    </h4>
+
+                    <p className="mb-3 text-xs text-slate-500">
+                      Pilih semua yang sesuai dengan kebiasaanmu.
+                    </p>
+
+                    <div className="space-y-3">
+                      {[
+                        {
+                          value: "kurang_tidur",
+                          label: "Sering tidur larut malam atau kurang tidur",
+                        },
+                        { value: "stres", label: "Sering mengalami stres" },
+                        {
+                          value: "paparan_matahari",
+                          label: "Sering beraktivitas di bawah sinar matahari",
+                        },
+                        {
+                          value: "makanan_tinggi_gula",
+                          label: "Sering mengonsumsi makanan tinggi gula",
+                        },
+                        {
+                          value: "makanan_tinggi_lemak",
+                          label: "Sering mengonsumsi makanan tinggi lemak",
+                        },
+                        {
+                          value: "kurang_minum_air",
+                          label: "Kurang minum air putih",
+                        },
+                      ].map((habit) => (
+                        <label
+                          key={habit.value}
+                          className="flex cursor-pointer items-start gap-3 text-sm text-slate-600"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={questionnaire.habits.includes(habit.value)}
+                            onChange={(event) => {
+                              setQuestionnaire((previous) => ({
+                                ...previous,
+                                habits: event.target.checked
+                                  ? [...previous.habits, habit.value]
+                                  : previous.habits.filter(
+                                      (item) => item !== habit.value,
+                                    ),
+                              }));
+                            }}
+                            className="mt-0.5 h-4 w-4 accent-violet-600"
+                          />
+                          <span>{habit.label}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* JENIS KULIT */}
+                  <div className="mb-6">
+                    <h4 className="mb-3 text-sm font-semibold text-ink">
+                      2. Apa jenis kulitmu?
+                    </h4>
+
+                    <select
+                      value={questionnaire.skin_type}
+                      onChange={(event) =>
+                        setQuestionnaire((previous) => ({
+                          ...previous,
+                          skin_type: event.target.value,
+                        }))
+                      }
+                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-violet-500"
+                    >
+                      <option value="unknown">
+                        Belum mengetahui jenis kulit
+                      </option>
+                      <option value="oily">Berminyak (Oily)</option>
+                      <option value="dry">Kering (Dry)</option>
+                      <option value="combination">
+                        Kombinasi (Combination)
+                      </option>
+                      <option value="sensitive">Sensitif (Sensitive)</option>
+                      <option value="normal">Normal</option>
+                    </select>
+                  </div>
+
+                  {/* PRODUK SKINCARE */}
+                  <div className="mb-6">
+                    <h4 className="mb-2 text-sm font-semibold text-ink">
+                      3. Produk skincare apa yang sedang kamu gunakan?
+                    </h4>
+
+                    <p className="mb-3 text-xs leading-5 text-slate-500">
+                      Tuliskan nama produk atau kandungan yang kamu gunakan.
+                      Contoh: Vitamin C serum, moisturizer, sunscreen, retinol,
+                      niacinamide, dan sebagainya.
+                    </p>
+
+                    <textarea
+                      value={questionnaire.current_products}
+                      onChange={(event) =>
+                        setQuestionnaire((previous) => ({
+                          ...previous,
+                          current_products: event.target.value,
+                        }))
+                      }
+                      rows={4}
+                      placeholder="Contoh: Facial wash, moisturizer, Vitamin C serum, sunscreen SPF 50..."
+                      className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-violet-500"
+                    />
+                  </div>
+
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab("photo")}
+                      className="rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                    >
+                      Kembali ke Foto
                     </button>
 
                     <button
-                      onClick={stopCamera}
-                      className="rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink"
+                      type="button"
+                      onClick={submitQuestionnaire}
+                      disabled={analyzing}
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      <VideoOff size={16} />
+                      {analyzing ? (
+                        <>
+                          <LoaderCircle size={17} className="animate-spin" />
+                          Sedang Menganalisis...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles size={17} />
+                          Mulai Analisis Kulit
+                        </>
+                      )}
                     </button>
-                  </>
-                )
-              ) : (
-                <button
-                  onClick={() => fileRef.current?.click()}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
-                >
-                  <Upload size={16} />
-                  Pilih gambar
-                </button>
+                  </div>
+
+                  <p className="mt-3 text-center text-[11px] leading-5 text-slate-400">
+                    Jawaban digunakan untuk memberikan konteks rekomendasi
+                    perawatan dan bukan untuk menentukan diagnosis medis.
+                  </p>
+                </div>
               )}
-            </div>
-
-            {/* STATUS */}
-            <div
-              aria-live="polite"
-              className="mt-4 text-center text-xs leading-5 text-slate-500"
-            >
-              {validating ? (
-                <span className="inline-flex items-center gap-2 text-violet-700">
-                  <LoaderCircle size={15} className="animate-spin" />
-                  Sedang memeriksa kualitas foto...
-                </span>
-              ) : (
-                message
-              )}
-            </div>
-
-            {fileName && (
-              <p className="mt-1 truncate text-center text-[11px] text-slate-400">
-                {fileName}
-              </p>
-            )}
-
-            {/* VALIDATION RESULT */}
-            {validation && !validating && (
-              <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                <div className="flex items-center gap-2">
-                  {validation.valid ? (
-                    <CheckCircle2 className="text-green-600" size={20} />
-                  ) : (
-                    <XCircle className="text-red-500" size={20} />
-                  )}
-
-                  <h3 className="text-sm font-semibold text-ink">
-                    {validation.valid
-                      ? "Foto berhasil divalidasi"
-                      : "Foto belum memenuhi syarat"}
-                  </h3>
-                </div>
-
-                {/* CHECK DETAILS */}
-                <div className="mt-4 space-y-3">
-                  {checks.map(
-                    (item) =>
-                      item.data && (
-                        <div
-                          key={item.name}
-                          className="flex items-center justify-between gap-3 text-xs"
-                        >
-                          <div className="flex items-center gap-2">
-                            {item.data.passed ? (
-                              <CheckCircle2
-                                size={15}
-                                className="text-green-600"
-                              />
-                            ) : (
-                              <XCircle size={15} className="text-red-500" />
-                            )}
-
-                            <span className="font-medium text-slate-700">
-                              {item.name}
-                            </span>
-                          </div>
-
-                          <span className="text-right text-slate-500">
-                            {item.detail}
-                          </span>
-                        </div>
-                      ),
-                  )}
-                </div>
-
-                {/* ERRORS */}
-                {validation.errors.length > 0 && (
-                  <div className="mt-4 rounded-xl bg-red-50 p-3">
-                    <p className="mb-2 text-xs font-semibold text-red-700">
-                      Hal yang perlu diperbaiki:
-                    </p>
-
-                    {validation.errors.map((error, index) => (
-                      <p
-                        key={index}
-                        className="mb-1 text-xs leading-5 text-red-600"
-                      >
-                        • {error}
-                      </p>
-                    ))}
-                  </div>
-                )}
-
-                {validation.valid && (
-                  <div className="mt-4 rounded-xl bg-green-50 p-3">
-                    <p className="text-xs leading-5 text-green-700">
-                      Foto berhasil melewati pemeriksaan kualitas. Silakan
-                      lengkapi kuesioner untuk melanjutkan ke analisis kulit.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* QUESTIONNAIRE */}
-            {showQuestionnaire && validation?.valid && (
-              <div className="mt-5 rounded-2xl border border-violet-100 bg-white p-5">
-                <div className="mb-5">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="text-violet-600" size={20} />
-                    <h3 className="font-semibold text-ink">
-                      Kenali Kondisi Kulitmu
-                    </h3>
-                  </div>
-
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    Jawab beberapa pertanyaan berikut agar rekomendasi perawatan
-                    dapat disesuaikan dengan kebiasaan dan rutinitas
-                    skincare-mu.
-                  </p>
-                </div>
-
-                {/* KEBIASAAN */}
-                <div className="mb-6">
-                  <h4 className="mb-3 text-sm font-semibold text-ink">
-                    1. Bagaimana kebiasaanmu sehari-hari?
-                  </h4>
-
-                  <p className="mb-3 text-xs text-slate-500">
-                    Pilih semua yang sesuai dengan kebiasaanmu.
-                  </p>
-
-                  <div className="space-y-3">
-                    {[
-                      {
-                        value: "kurang_tidur",
-                        label: "Sering tidur larut malam atau kurang tidur",
-                      },
-                      { value: "stres", label: "Sering mengalami stres" },
-                      {
-                        value: "paparan_matahari",
-                        label: "Sering beraktivitas di bawah sinar matahari",
-                      },
-                      {
-                        value: "makanan_tinggi_gula",
-                        label: "Sering mengonsumsi makanan tinggi gula",
-                      },
-                      {
-                        value: "makanan_tinggi_lemak",
-                        label: "Sering mengonsumsi makanan tinggi lemak",
-                      },
-                      {
-                        value: "kurang_minum_air",
-                        label: "Kurang minum air putih",
-                      },
-                    ].map((habit) => (
-                      <label
-                        key={habit.value}
-                        className="flex cursor-pointer items-start gap-3 text-sm text-slate-600"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={questionnaire.habits.includes(habit.value)}
-                          onChange={(event) => {
-                            setQuestionnaire((previous) => ({
-                              ...previous,
-                              habits: event.target.checked
-                                ? [...previous.habits, habit.value]
-                                : previous.habits.filter(
-                                    (item) => item !== habit.value,
-                                  ),
-                            }));
-                          }}
-                          className="mt-0.5 h-4 w-4 accent-violet-600"
-                        />
-                        <span>{habit.label}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* JENIS KULIT */}
-                <div className="mb-6">
-                  <h4 className="mb-3 text-sm font-semibold text-ink">
-                    2. Apa jenis kulitmu?
-                  </h4>
-
-                  <select
-                    value={questionnaire.skin_type}
-                    onChange={(event) =>
-                      setQuestionnaire((previous) => ({
-                        ...previous,
-                        skin_type: event.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-violet-500"
-                  >
-                    <option value="unknown">
-                      Belum mengetahui jenis kulit
-                    </option>
-                    <option value="oily">Berminyak (Oily)</option>
-                    <option value="dry">Kering (Dry)</option>
-                    <option value="combination">Kombinasi (Combination)</option>
-                    <option value="sensitive">Sensitif (Sensitive)</option>
-                    <option value="normal">Normal</option>
-                  </select>
-                </div>
-
-                {/* PRODUK SKINCARE */}
-                <div className="mb-6">
-                  <h4 className="mb-2 text-sm font-semibold text-ink">
-                    3. Produk skincare apa yang sedang kamu gunakan?
-                  </h4>
-
-                  <p className="mb-3 text-xs leading-5 text-slate-500">
-                    Tuliskan nama produk atau kandungan yang kamu gunakan.
-                    Contoh: Vitamin C serum, moisturizer, sunscreen, retinol,
-                    niacinamide, dan sebagainya.
-                  </p>
-
-                  <textarea
-                    value={questionnaire.current_products}
-                    onChange={(event) =>
-                      setQuestionnaire((previous) => ({
-                        ...previous,
-                        current_products: event.target.value,
-                      }))
-                    }
-                    rows={4}
-                    placeholder="Contoh: Facial wash, moisturizer, Vitamin C serum, sunscreen SPF 50..."
-                    className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-violet-500"
-                  />
-                </div>
-
-                <button
-                  type="button"
-                  onClick={submitQuestionnaire}
-                  disabled={analyzing}
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {analyzing ? (
-                    <>
-                      <LoaderCircle size={17} className="animate-spin" />
-                      Sedang Menganalisis...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles size={17} />
-                      Mulai Analisis Kulit
-                    </>
-                  )}
-                </button>
-
-                <p className="mt-3 text-center text-[11px] leading-5 text-slate-400">
-                  Jawaban digunakan untuk memberikan konteks rekomendasi
-                  perawatan dan bukan untuk menentukan diagnosis medis.
-                </p>
-              </div>
-            )}
 
             {/* ANALYSIS RESULT */}
-            {analyzing && (
+            {activeTab === "results" && analyzing && (
               <div className="mt-5 rounded-2xl border border-violet-100 bg-violet-50 p-4">
                 <div className="flex items-center gap-3">
                   <LoaderCircle
@@ -872,15 +944,61 @@ export default function SkinScanner() {
               </div>
             )}
 
-            {analysis && (
+            {activeTab === "results" && analysis && (
               <div className="mt-5 rounded-2xl border border-violet-100 bg-white p-5">
+                4{/* FOTO WAJAH DENGAN BOUNDING BOX YOLO */}
+                <div className="mb-6">
+                  <h3 className="mb-3 text-sm font-semibold text-ink">
+                    Hasil Deteksi pada Wajah
+                  </h3>
+
+                  {preview && (
+                    <div className="relative mx-auto h-[360px] w-full max-w-md overflow-hidden rounded-2xl bg-[#17152b]">
+                      <img
+                        src={preview}
+                        alt="Foto wajah hasil analisis Skinova AI"
+                        className="absolute inset-0 h-full w-full object-contain"
+                      />
+
+                      <svg
+                        className="pointer-events-none absolute inset-0 h-full w-full"
+                        viewBox={`0 0 ${analysis.image_width} ${analysis.image_height}`}
+                        preserveAspectRatio="xMidYMid meet"
+                      >
+                        {analysis.detections.map((detection, index) => {
+                          const box = detection.bounding_box;
+
+                          return (
+                            <g key={index}>
+                              <rect
+                                x={box.x1}
+                                y={box.y1}
+                                width={box.x2 - box.x1}
+                                height={box.y2 - box.y1}
+                                fill="rgba(124, 58, 237, 0.12)"
+                                stroke="#a78bfa"
+                                strokeWidth="3"
+                                vectorEffect="non-scaling-stroke"
+                              />
+                            </g>
+                          );
+                        })}
+                      </svg>
+                    </div>
+                  )}
+
+                  <p className="mt-2 text-center text-xs text-slate-400">
+                    Area kotak menunjukkan lokasi kondisi kulit yang terdeteksi
+                    oleh AI.
+                  </p>
+                </div>
+                {/* JUDUL HASIL ANALISIS */}
                 <div className="flex items-center gap-2">
                   <Sparkles className="text-violet-600" size={20} />
                   <h3 className="font-semibold text-ink">
                     Hasil Analisis Skinova AI
                   </h3>
                 </div>
-
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <div className="rounded-xl bg-violet-50 p-3">
                     <p className="text-xs text-slate-500">Total deteksi</p>
@@ -896,7 +1014,6 @@ export default function SkinScanner() {
                     </p>
                   </div>
                 </div>
-
                 <div className="mt-5">
                   <p className="mb-3 text-sm font-semibold text-ink">
                     Kondisi kulit terdeteksi
@@ -931,7 +1048,6 @@ export default function SkinScanner() {
                     </div>
                   )}
                 </div>
-
                 {/* QUESTIONNAIRE PERSONALIZATION */}
                 {analysis.questionnaire_context && (
                   <div className="mt-6 rounded-2xl border border-violet-100 bg-violet-50 p-4">
@@ -989,7 +1105,6 @@ export default function SkinScanner() {
                     </div>
                   </div>
                 )}
-
                 {/* SKINCARE RECOMMENDATIONS */}
                 {analysis.recommendations &&
                   analysis.recommendations.length > 0 && (
@@ -1019,7 +1134,6 @@ export default function SkinScanner() {
                       </div>
                     </div>
                   )}
-
                 <div className="mt-5 rounded-xl border border-amber-100 bg-amber-50 p-3">
                   <p className="text-xs leading-5 text-amber-800">
                     Hasil ini merupakan estimasi berdasarkan deteksi AI dan
@@ -1027,7 +1141,6 @@ export default function SkinScanner() {
                     lebih lanjut.
                   </p>
                 </div>
-
                 <p className="mt-3 text-[11px] text-slate-400">
                   Model: {analysis.model}
                 </p>
@@ -1096,6 +1209,24 @@ export default function SkinScanner() {
                 validasi hanya memeriksa kelayakan gambar, bukan mendiagnosis
                 kondisi kulit. Foto belum dianalisis oleh model AI.
               </p>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => setActiveTab("questionnaire")}
+                className="flex-1 rounded-full border border-violet-200 px-5 py-3 text-sm font-semibold text-violet-700 transition hover:bg-violet-50"
+              >
+                Lihat Kuesioner
+              </button>
+
+              <button
+                type="button"
+                onClick={reset}
+                className="flex-1 rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+              >
+                Analisis Ulang
+              </button>
             </div>
           </aside>
         </div>
