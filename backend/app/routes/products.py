@@ -1,23 +1,52 @@
 
-from pydantic import BaseModel
-from typing import Optional
+from fastapi import APIRouter
+
+from app.services.product_recommendations import (
+    get_product_recommendations,
+    load_skincare_products,
+)
+
+router = APIRouter(
+    prefix="/api/products",
+    tags=["Products"],
+)
 
 
-class SkincareProduct(BaseModel):
-    id: str
-    name: str
-    brand: str
-    category: str
-    description: str
+@router.get("/")
+async def get_products():
+    products = load_skincare_products()
 
-    ingredients: list[str]
-    skin_types: list[str]
-    suitable_conditions: list[str]
+    return {
+        "success": True,
+        "total": len(products),
+        "products": [
+            product.model_dump()
+            for product in products
+            if product.is_active
+        ],
+    }
 
-    price: int
 
-    image_url: Optional[str] = None
-    marketplace: Optional[str] = None
-    product_url: Optional[str] = None
+@router.get("/test-recommendations")
+async def test_product_recommendations():
+    sample_recommendations = [
+        {
+            "title": "Acne",
+            "ingredients": [
+                "Salicylic Acid",
+                "Niacinamide",
+            ],
+        }
+    ]
 
-    is_active: bool = True
+    products = get_product_recommendations(
+        recommendations=sample_recommendations,
+        limit=6,
+    )
+
+    return {
+        "success": True,
+        "condition": "Acne",
+        "total": len(products),
+        "products": products,
+    }

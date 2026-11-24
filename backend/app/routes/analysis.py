@@ -9,9 +9,9 @@ from app.services.skin_recommendations import (
     get_skin_recommendations,
     get_ingredient_warnings,
 )
-from app.services.questionnaire_service import build_questionnaire_context,
+from app.services.questionnaire_service import build_questionnaire_context
 from app.services.product_recommendations import (
-    get_product_recommendations
+    get_product_recommendations,
 )
 
 
@@ -113,7 +113,9 @@ async def analyze_skin(
 
         analysis["product_recommendations"] = (
             get_product_recommendations(
-                analysis.get("recommendations", [])
+                recommendations=analysis.get("recommendations", []),
+                skin_type=questionnaire_data.get("skin_type", "unknown"),
+                limit=6,
             )
         )
 
