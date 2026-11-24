@@ -104,11 +104,11 @@ export default function EducationPage() {
       >
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#89917E]">
-            Explore & Learn
+            Jelajahi dan Pelajari
           </span>
 
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#30372D] md:text-4xl">
-            Knowledge Library
+            Perpustakaan Pengetahuan Kulit
           </h2>
 
           <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[#85867D]">
