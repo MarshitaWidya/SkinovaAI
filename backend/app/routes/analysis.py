@@ -9,7 +9,10 @@ from app.services.skin_recommendations import (
     get_skin_recommendations,
     get_ingredient_warnings,
 )
-from app.services.questionnaire_service import build_questionnaire_context
+from app.services.questionnaire_service import build_questionnaire_context,
+from app.services.product_recommendations import (
+    get_product_recommendations
+)
 
 
 router = APIRouter(
@@ -106,6 +109,12 @@ async def analyze_skin(
 
         analysis["ingredient_warnings"] = get_ingredient_warnings(
             analysis["recommendations"]
+        )
+
+        analysis["product_recommendations"] = (
+            get_product_recommendations(
+                analysis.get("recommendations", [])
+            )
         )
 
         analysis["questionnaire_context"] = (
