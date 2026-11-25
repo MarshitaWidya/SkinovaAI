@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Menu, Sparkles, X } from "lucide-react";
 
 const navLinks = [
@@ -18,18 +19,20 @@ export default function Navbar() {
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#DCCFC0]/40 bg-[#FAFAF3]/85 shadow-[0_1px_8px_rgba(41,43,39,0.03)] backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-5 sm:px-6 lg:px-12">
         {/* Brand */}
+
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5"
+          className="flex shrink-0 items-center"
           onClick={() => setIsMenuOpen(false)}
         >
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#566251] text-white">
-            <Sparkles size={19} />
-          </div>
-
-          <span className="font-['Newsreader'] text-2xl font-semibold tracking-tight text-[#1A1C18]">
-            Skinova AI
-          </span>
+          <Image
+            src="/images/logo-2.png"
+            alt="Skinova AI"
+            width={180}
+            height={61}
+            priority
+            className="h-10 w-auto object-contain sm:h-11"
+          />
         </Link>
 
         {/* Desktop Navigation */}
