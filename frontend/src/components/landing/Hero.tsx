@@ -1,85 +1,133 @@
-import { ArrowRight, ScanFace, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  LockKeyhole,
+  ShieldCheck,
+  ScanFace,
+} from "lucide-react";
+
+import Image from "next/image";
+
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -right-32 -top-24 h-[500px] w-[500px] rounded-full bg-violet-100/70 blur-3xl" />
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
-        <div className="relative z-10">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-100 bg-white px-4 py-2 text-xs font-semibold text-violet">
-            <Sparkles size={14} /> SMART SKIN INSIGHT
+    <section className="relative mx-auto w-full max-w-7xl overflow-hidden px-6 py-12 lg:px-12 lg:py-24">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16 lg:mt-5">
+        {/* Left Column */}
+        <div className="relative z-10 flex flex-col items-start space-y-8 lg:col-span-7">
+          {/* Heading */}
+          <div className="space-y-4">
+            <h1 className="max-w-2xl font-['Newsreader'] text-4xl font-normal leading-[1.1] tracking-tight text-[#1A1C18] sm:text-5xl lg:text-[56px]">
+              Understand Your Skin,{" "}
+              <span className="italic">Care With Confidence.</span>
+            </h1>
+
+            <p className="max-w-xl text-[15px] leading-7 text-[#444841] md:text-[17px] md:leading-8">
+              Kenali kondisi kulitmu lebih dalam melalui teknologi AI dan
+              temukan informasi perawatan yang sesuai dengan kebutuhan kulitmu
+              secara terarah dan terpercaya.
+            </p>
           </div>
-          <h1 className="max-w-2xl text-5xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-6xl">
-            Kenali kulitmu, <span className="text-violet">rawat dengan</span>{" "}
-            lebih tepat.
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-8 text-slate-600">
-            Kenali indikasi kondisi kulit melalui pemindaian wajah dan dapatkan
-            informasi perawatan yang lebih terarah. Mulai dengan foto yang jelas
-            dan pencahayaan yang baik.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <a
               href="#scanner"
-              className="inline-flex items-center gap-2 rounded-full bg-violet px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-3 rounded-full bg-[#566251] px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:opacity-90"
             >
-              Mulai pemindaian <ArrowRight size={17} />
+              <span>Mulai Analisis Kulit</span>
+              <ArrowRight size={17} />
             </a>
+
             <a
               href="#cara-kerja"
-              className="rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-ink hover:border-violet"
+              className="inline-flex items-center justify-center rounded-full bg-[#F4F4ED] px-7 py-3.5 text-sm font-semibold text-[#1A1C18] transition-colors duration-200 hover:bg-[#E8E9E2]"
             >
-              Pelajari cara kerja
+              Pelajari Lebih Lanjut
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap gap-6 text-xs text-slate-500">
-            <span className="flex items-center gap-2">
-              <ShieldCheck size={16} className="text-violet" /> Privasi
-              diutamakan
-            </span>
-            <span className="flex items-center gap-2">
-              <ScanFace size={16} className="text-violet" /> Panduan foto wajah
-            </span>
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6 text-xs text-[#444841]/80">
+            <div className="flex items-center gap-2">
+              <ShieldCheck size={16} className="text-[#566251]" />
+              <span>Tervalidasi 5 Kategori</span>
+            </div>
+
+            <span className="hidden h-1 w-1 rounded-full bg-[#C5C8BF] sm:block" />
+
+            <div className="flex items-center gap-2">
+              <LockKeyhole size={16} className="text-[#566251]" />
+              <span>Privasi Terjamin</span>
+            </div>
+
+            <span className="hidden h-1 w-1 rounded-full bg-[#C5C8BF] sm:block" />
+
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-[#566251]" />
+              <span>Bebas Biaya</span>
+            </div>
           </div>
         </div>
-        <div className="relative mx-auto w-full max-w-lg">
-          <div className="absolute inset-8 rounded-[3rem] bg-gradient-to-br from-violet-200 to-cyan-100 blur-2xl" />
-          <div className="relative rounded-[2rem] border border-white bg-white p-4 shadow-soft">
-            <div className="flex items-center justify-between px-2 py-3">
-              <div>
-                <p className="text-xs font-semibold text-slate-400">
-                  SKINOVA AI
-                </p>
-                <p className="font-semibold text-ink">Skin overview</p>
+
+        {/* Right Column: Editorial Portrait */}
+        <div className="relative lg:col-span-5">
+          <div className="relative mx-auto max-w-md lg:max-w-none">
+            {/* Decorative Background */}
+            <div className="pointer-events-none absolute -inset-4 -rotate-1 rounded-3xl bg-[#F4F4ED]" />
+
+            {/* Portrait Card */}
+            <div className="relative overflow-hidden rounded-2xl bg-white shadow-sm">
+              <div className="aspect-[4/5] w-full overflow-hidden bg-[#E8E9E2]">
+                <img
+                  src="/images/hero.png"
+                  alt="Editorial portrait wajah dengan tekstur kulit alami"
+                  className="h-full w-full object-cover object-center"
+                />
               </div>
-              <span className="rounded-full bg-lilac px-3 py-1.5 text-xs font-semibold text-violet">
-                Preview
-              </span>
-            </div>
-            <div className="relative grid aspect-[4/3] place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-[#e9e4ff] via-[#f7f4ff] to-[#dff5f3]">
-              <div className="absolute h-56 w-44 rounded-[48%] border-2 border-dashed border-violet/50" />
-              <div className="relative grid h-44 w-36 place-items-center rounded-[48%] bg-gradient-to-b from-[#e9c9b8] to-[#c99182] shadow-inner">
-                <div className="absolute top-[42%] flex w-24 justify-between">
-                  <span className="h-1 w-3 rounded-full bg-[#79534d]" />
-                  <span className="h-1 w-3 rounded-full bg-[#79534d]" />
-                </div>
-                <div className="absolute top-[57%] h-3 w-5 rounded-b-full border-b-2 border-[#a45e61]" />
-              </div>
-              <span className="absolute bottom-4 rounded-full border border-white/70 bg-white/80 px-4 py-2 text-xs font-medium text-ink backdrop-blur">
-                Ilustrasi tampilan pemindaian
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-2 p-2 pt-4">
-              {["Skin clarity", "Skin balance", "Skin comfort"].map((v) => (
-                <div key={v} className="rounded-xl bg-[#faf9ff] p-3">
-                  <div className="mb-2 h-1.5 rounded-full bg-violet-100">
-                    <div className="h-1.5 w-2/3 rounded-full bg-violet-400" />
-                  </div>
-                  <p className="text-[10px] font-medium text-slate-500">{v}</p>
-                  <p className="mt-1 text-xs font-semibold text-ink">
-                    Akan dianalisis
+
+              {/* Overlay */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#2F312D]/40 via-transparent to-transparent" />
+
+              {/* Quality Validation Badge */}
+              <div className="absolute left-5 top-5 flex items-center gap-2.5 rounded-xl bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
+                <div className="h-2 w-2 rounded-full bg-[#A2AF9B]" />
+
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#444841]">
+                    Quality Validation
+                  </p>
+
+                  <p className="text-sm font-semibold text-[#1A1C18]">
+                    Pemeriksaan Foto Aktif
                   </p>
                 </div>
-              ))}
+              </div>
+
+              {/* Detection Categories Badge */}
+              <div className="absolute inset-x-5 bottom-5 rounded-xl bg-white/95 p-4 shadow-md backdrop-blur-md">
+                <div className="mb-3 flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#444841]">
+                    5 Deteksi Utama
+                  </span>
+
+                  <span className="text-[10px] font-semibold text-[#566251]">
+                    YOLO11n Active
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {["Acne", "Komedo", "Flek Hitam", "Redness", "Wrinkles"].map(
+                    (item) => (
+                      <span
+                        key={item}
+                        className="rounded-full bg-[#EEEEE8] px-2.5 py-1 text-xs text-[#1A1C18]"
+                      >
+                        {item}
+                      </span>
+                    ),
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

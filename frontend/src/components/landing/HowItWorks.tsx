@@ -1,74 +1,111 @@
-import { Activity, Camera, ClipboardCheck } from "lucide-react";
+import {
+  Camera,
+  ScanSearch,
+  ChartNoAxesColumn,
+  CalendarDays,
+} from "lucide-react";
 
 const steps = [
   {
-    icon: Camera,
     number: "01",
-    title: "Ambil Foto Wajah",
+    title: "Share Your Photo",
     description:
-      "Gunakan kamera atau unggah foto wajah dengan pencahayaan yang baik agar sistem dapat melakukan analisis.",
+      "Unggah foto wajah dengan resolusi jelas atau ambil langsung melalui kamera dengan pencahayaan alami tanpa filter digital.",
+    meta: "Format JPG, PNG, WEBP",
+    icon: Camera,
   },
   {
-    icon: ClipboardCheck,
     number: "02",
-    title: "Pemeriksaan Kualitas",
+    title: "Skin Assessment",
     description:
-      "Sistem akan memeriksa kualitas foto, termasuk pencahayaan, ketajaman, dan keberadaan wajah.",
+      "Sistem memvalidasi ketajaman visual menggunakan OpenCV dan mendeteksi titik permasalahan kulit dengan inferensi model deep learning.",
+    meta: "Real-time Inference",
+    icon: ScanSearch,
   },
   {
-    icon: Activity,
     number: "03",
-    title: "Analisis dan Insight",
+    title: "Personalized Insights",
     description:
-      "Model AI membantu mengenali indikasi kondisi kulit dan memberikan informasi serta rekomendasi perawatan.",
+      "Jelajahi pemetaan area terdeteksi dengan skor confidence detail dan rekomendasi bahan aktif yang terarah sesuai temuan.",
+    meta: "Probabilitas & Lokasi",
+    icon: ChartNoAxesColumn,
+  },
+  {
+    number: "04",
+    title: "Understand Routine",
+    description:
+      "Pahami cara kerja zat aktif, urutan pemakaian harian (AM/PM), serta panduan peringatan interaksi zat demi menjaga skin barrier.",
+    meta: "Panduan Terpadu",
+    icon: CalendarDays,
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section id="cara-kerja" className="mx-auto max-w-7xl px-5 py-20 lg:px-8">
-      <div className="mx-auto max-w-2xl text-center">
-        <span className="text-xs font-bold tracking-[.2em] text-violet">
-          PROSES SEDERHANA
-        </span>
+    <section
+      id="cara-kerja"
+      className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-12"
+    >
+      <div className="space-y-16">
+        {/* Section Heading */}
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div className="space-y-3">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#566251]">
+              Alur Metodologis
+            </span>
 
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-          Dari foto menjadi insight
-        </h2>
+            <h2 className="font-['Newsreader'] text-3xl font-normal tracking-tight text-[#1A1C18] md:text-[40px] md:leading-[1.2]">
+              Cara Kerja Skinova AI
+            </h2>
+            <p className="max-w-3xl text-[15px] leading-7 text-[#444841] md:text-[17px] md:leading-8">
+              Empat tahapan non-invasif dari potret digital hingga pembentukan
+              pemahaman mandiri yang menyeluruh.
+            </p>
+          </div>
+        </div>
 
-        <p className="mt-3 leading-7 text-slate-600">
-          Alur Skinova dirancang agar pengguna dapat memahami setiap tahap
-          analisis kulit dengan mudah.
-        </p>
-      </div>
+        {/* Step Cards */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step) => {
+            const Icon = step.icon;
 
-      <div className="mt-12 grid gap-5 md:grid-cols-3">
-        {steps.map((step) => {
-          const Icon = step.icon;
+            return (
+              <div
+                key={step.number}
+                className="flex flex-col justify-between space-y-8 rounded-2xl bg-white p-6 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+              >
+                <div className="space-y-6">
+                  {/* Number */}
+                  <div className="font-['Newsreader'] text-5xl font-normal leading-none text-[#A2AF9B] md:text-[56px]">
+                    {step.number}
+                  </div>
 
-          return (
-            <div
-              key={step.number}
-              className="rounded-2xl border border-violet-100 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-100/50"
-            >
-              <div className="flex items-center justify-between">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-lilac text-violet">
-                  <Icon size={22} />
-                </span>
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <h3 className="font-['Newsreader'] text-[22px] font-medium leading-[30px] text-[#1A1C18]">
+                      {step.title}
+                    </h3>
 
-                <span className="text-sm font-bold text-violet">
-                  {step.number}
-                </span>
+                    <p className="text-[13px] leading-6 text-[#444841]">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bottom Metadata */}
+                <div className="flex items-center gap-2 border-t border-[#E8E9E2] pt-4 text-xs text-[#444841]">
+                  <Icon
+                    size={15}
+                    strokeWidth={1.8}
+                    className="shrink-0 text-[#566251]"
+                  />
+
+                  <span>{step.meta}</span>
+                </div>
               </div>
-
-              <h3 className="mt-6 font-semibold text-ink">{step.title}</h3>
-
-              <p className="mt-3 text-sm leading-7 text-slate-500">
-                {step.description}
-              </p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

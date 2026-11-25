@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SkinScanner from "@/components/SkinScanner";
 
@@ -11,10 +10,9 @@ export const metadata = {
 export default function AnalysisPage() {
   return (
     <>
-      <main>
+      <main className="min-h-screen bg-[#FAFAF3]">
         <SkinScanner />
       </main>
-
       <Footer />
     </>
   );

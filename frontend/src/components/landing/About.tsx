@@ -1,77 +1,85 @@
-import { Sparkles, Brain, ShieldCheck } from "lucide-react";
+import { ScanFace, Sparkles, FlaskConical } from "lucide-react";
 
 const features = [
   {
-    icon: Brain,
-    title: "AI-Powered Analysis",
+    icon: ScanFace,
+    title: "AI-Powered Detection",
     description:
-      "Memanfaatkan teknologi Artificial Intelligence untuk membantu mengenali indikasi kondisi kulit wajah.",
+      "Deteksi visual lima kondisi utama kulit, yaitu Acne, Komedo, Dark Spots, Kemerahan, dan Garis Halus menggunakan teknologi Computer Vision dan deep learning.",
+    label: "YOLO11n Multi-Class Precision",
   },
   {
     icon: Sparkles,
     title: "Personalized Insights",
     description:
-      "Memberikan informasi dan rekomendasi perawatan kulit berdasarkan hasil analisis serta informasi pengguna.",
+      "Rekomendasi bahan aktif dan panduan perawatan yang disesuaikan dengan profil serta kebutuhan kulit berdasarkan hasil analisis.",
+    label: "Evidence-Based Curation",
   },
   {
-    icon: ShieldCheck,
-    title: "Easy and Accessible",
+    icon: FlaskConical,
+    title: "Ingredient Awareness",
     description:
-      "Menghadirkan pengalaman analisis kulit yang praktis, mudah dipahami, dan dapat diakses melalui website.",
+      "Informasi kompatibilitas kandungan aktif untuk membantu pengguna memahami potensi iritasi, over-exfoliation, dan interaksi bahan skincare.",
+    label: "Safety & Harmony Index",
   },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="bg-white px-5 py-20 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <span className="text-xs font-bold tracking-[.2em] text-violet">
-              TENTANG SKINOVA AI
-            </span>
+    <section id="about" className="w-full bg-[#F4F4ED] px-6 py-20 lg:px-12">
+      <div className="mx-auto max-w-7xl space-y-16">
+        {/* Section Header */}
+        <div className="max-w-3xl space-y-5">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#566251]">
+            Scientific Rigor & Vision
+          </span>
 
-            <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-ink md:text-4xl">
-              Kenali kulitmu, mulai perjalanan perawatan yang lebih tepat.
-            </h2>
+          <h2 className="font-serif text-3xl font-normal tracking-tight text-[#1A1C18] md:text-[40px] md:leading-[1.2]">
+            More Than Skin Analysis.
+          </h2>
 
-            <p className="mt-5 leading-8 text-slate-600">
-              Skinova AI merupakan platform berbasis Artificial Intelligence
-              yang membantu pengguna mengenali indikasi kondisi kulit wajah
-              melalui teknologi analisis gambar.
-            </p>
+          <p className="max-w-3xl text-[15px] leading-7 text-[#444841] md:text-[17px] md:leading-8">
+            Skinova AI menggabungkan Computer Vision (YOLO11n & OpenCV) dengan
+            pemahaman dermatologis terapan untuk menerjemahkan kondisi tampak
+            pada kulit menjadi wawasan rutinitas yang terstruktur, rasional, dan
+            aman.
+          </p>
+        </div>
 
-            <p className="mt-4 leading-8 text-slate-600">
-              Melalui analisis foto wajah, informasi kebiasaan, dan jenis kulit,
-              Skinova AI memberikan insight serta rekomendasi perawatan yang
-              dapat membantu pengguna memahami kebutuhan kulitnya.
-            </p>
-          </div>
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {features.map((feature) => {
+            const Icon = feature.icon;
 
-          <div className="grid gap-4">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-
-              return (
-                <div
-                  key={feature.title}
-                  className="flex gap-5 rounded-2xl border border-violet-100 bg-[#FAF9FF] p-5"
-                >
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-lilac text-violet">
-                    <Icon size={22} />
+            return (
+              <div
+                key={feature.title}
+                className="flex flex-col justify-between space-y-8 rounded-2xl bg-white p-8 shadow-sm transition-transform duration-200 hover:-translate-y-1"
+              >
+                <div className="space-y-4">
+                  {/* Icon */}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A2AF9B]/20 text-[#566251]">
+                    <Icon size={24} strokeWidth={1.8} />
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-ink">{feature.title}</h3>
+                  {/* Title */}
+                  <h3 className="font-serif text-[22px] font-medium leading-[30px] text-[#1A1C18]">
+                    {feature.title}
+                  </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-slate-500">
-                      {feature.description}
-                    </p>
-                  </div>
+                  {/* Description */}
+                  <p className="text-[15px] leading-6 text-[#444841]">
+                    {feature.description}
+                  </p>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Technology Label */}
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-[#566251]">
+                  {feature.label}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
