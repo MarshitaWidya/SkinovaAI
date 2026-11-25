@@ -16,6 +16,9 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
 
 import {
@@ -36,23 +39,23 @@ function RecommendationCard({
   recommendation: SkinRecommendation;
 }) {
   return (
-    <div className="rounded-2xl border border-violet-100 bg-white p-5">
+    <div className="rounded-2xl border border-[#E6E8DF] bg-white p-5">
       <div className="flex items-start gap-3">
-        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-violet-100">
-          <Sparkles className="text-violet-600" size={21} />
+        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#F4F4ED]">
+          <Sparkles className="text-[#566251]" size={21} />
         </div>
 
         <div>
-          <h4 className="font-semibold capitalize text-ink">
+          <h4 className="font-semibold capitalize text-[#1A1C18]">
             {recommendation.title}
           </h4>
 
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-[#858B80]">
             {recommendation.detected_count} objek terdeteksi
           </p>
 
           {recommendation.description && (
-            <p className="mt-2 text-sm leading-6 text-slate-600">
+            <p className="mt-2 text-sm leading-6 text-[#6D7269]">
               {recommendation.description}
             </p>
           )}
@@ -60,7 +63,7 @@ function RecommendationCard({
       </div>
 
       <div className="mt-5">
-        <h5 className="text-sm font-semibold text-ink">
+        <h5 className="text-sm font-semibold text-[#1A1C18]">
           Kandungan skincare yang disarankan
         </h5>
 
@@ -68,7 +71,7 @@ function RecommendationCard({
           {recommendation.ingredients.map((ingredient) => (
             <span
               key={ingredient}
-              className="rounded-full bg-violet-50 px-3 py-2 text-xs font-semibold text-violet-700"
+              className="rounded-full border border-[#DDE3D8] bg-[#F4F4ED] px-3 py-2 text-xs font-medium text-[#566251]"
             >
               {ingredient}
             </span>
@@ -77,7 +80,7 @@ function RecommendationCard({
       </div>
 
       <div className="mt-5">
-        <h5 className="text-sm font-semibold text-ink">
+        <h5 className="text-sm font-semibold text-[#1A1C18]">
           Perawatan yang disarankan
         </h5>
 
@@ -85,11 +88,11 @@ function RecommendationCard({
           {recommendation.care_tips.map((tip, index) => (
             <li
               key={index}
-              className="flex gap-2 text-sm leading-6 text-slate-600"
+              className="flex gap-2 text-sm leading-6 text-[#6D7269]"
             >
               <CheckCircle2
                 size={16}
-                className="mt-1 shrink-0 text-green-600"
+                className="mt-1 shrink-0 text-[#788873]"
               />
               {tip}
             </li>
@@ -97,8 +100,8 @@ function RecommendationCard({
         </ul>
       </div>
 
-      <div className="mt-5 rounded-xl bg-amber-50 p-4">
-        <h5 className="text-sm font-semibold text-amber-900">
+      <div className="mt-5 rounded-xl border border-[#E8DCCB] bg-[#F8F3EC] p-4">
+        <h5 className="text-sm font-semibold text-[#8C4E2F]">
           Hal yang perlu dihindari
         </h5>
 
@@ -106,9 +109,9 @@ function RecommendationCard({
           {recommendation.avoid.map((item, index) => (
             <li
               key={index}
-              className="flex gap-2 text-sm leading-6 text-amber-800"
+              className="flex gap-2 text-sm leading-6 text-[#665D51]"
             >
-              <ShieldAlert size={15} className="mt-1 shrink-0" />
+              <ShieldAlert size={15} className="mt-1 shrink-0 text-[#8C4E2F]" />
               {item}
             </li>
           ))}
@@ -126,9 +129,9 @@ function ProductCard({ product }: { product: ProductRecommendation }) {
   }).format(product.price);
 
   return (
-    <div className="group h-full overflow-hidden rounded-2xl border border-violet-100 bg-white transition hover:border-violet-300 hover:shadow-md">
+    <div className="group h-full overflow-hidden rounded-2xl border border-[#E6E8DF] bg-white transition duration-300 hover:border-[#A2AF9B]">
       {/* PRODUCT IMAGE */}
-      <div className="relative flex h-44 items-center justify-center overflow-hidden bg-violet-50">
+      <div className="relative flex h-44 items-center justify-center overflow-hidden bg-[#F4F4ED]">
         {product.image_url ? (
           <img
             src={product.image_url}
@@ -136,35 +139,35 @@ function ProductCard({ product }: { product: ProductRecommendation }) {
             className="h-full w-full object-contain p-4 transition duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-violet-300">
+          <div className="flex flex-col items-center gap-2 text-[#A2AF9B]">
             <ShoppingBag size={42} strokeWidth={1.5} />
-            <span className="text-xs font-medium">
+            <span className="text-xs font-medium text-[#858B80]">
               Gambar produk belum tersedia
             </span>
           </div>
         )}
 
-        <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[10px] font-semibold text-violet-700 shadow-sm">
+        <span className="absolute left-3 top-3 rounded-full border border-[#E6E8DF] bg-white px-3 py-1 text-[10px] font-semibold text-[#566251]">
           {product.category}
         </span>
       </div>
 
       {/* PRODUCT INFORMATION */}
       <div className="p-4">
-        <p className="text-xs font-medium text-violet-600">{product.brand}</p>
+        <p className="text-xs font-semibold text-[#788873]">{product.brand}</p>
 
-        <h4 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">
+        <h4 className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-[#1A1C18]">
           {product.name}
         </h4>
 
-        <p className="mt-2 line-clamp-2 text-xs leading-5 text-slate-500">
+        <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#6D7269]">
           {product.description}
         </p>
 
         {/* MATCHING INGREDIENTS */}
         {product.matching_ingredients.length > 0 && (
           <div className="mt-4">
-            <p className="text-[11px] font-semibold text-slate-600">
+            <p className="text-[11px] font-semibold text-[#444841]">
               Kandungan yang sesuai
             </p>
 
@@ -172,7 +175,7 @@ function ProductCard({ product }: { product: ProductRecommendation }) {
               {product.matching_ingredients.map((ingredient) => (
                 <span
                   key={ingredient}
-                  className="rounded-full bg-violet-50 px-2.5 py-1 text-[10px] font-medium text-violet-700"
+                  className="rounded-full border border-[#DDE3D8] bg-[#F4F4ED] px-2.5 py-1 text-[10px] font-medium text-[#566251]"
                 >
                   {ingredient}
                 </span>
@@ -182,10 +185,12 @@ function ProductCard({ product }: { product: ProductRecommendation }) {
         )}
 
         {/* PRICE */}
-        <div className="mt-4 border-t border-slate-100 pt-3">
-          <p className="text-[11px] text-slate-400">Harga katalog</p>
+        <div className="mt-4 border-t border-[#E6E8DF] pt-3">
+          <p className="text-[11px] text-[#858B80]">Harga katalog</p>
 
-          <p className="mt-1 text-base font-bold text-ink">{formattedPrice}</p>
+          <p className="mt-1 text-base font-bold text-[#1A1C18]">
+            {formattedPrice}
+          </p>
         </div>
 
         {/* PRODUCT LINK */}
@@ -194,19 +199,19 @@ function ProductCard({ product }: { product: ProductRecommendation }) {
             href={product.product_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-violet px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-violet-700"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#566251] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#465342]"
           >
             Lihat Produk
             <ExternalLink size={14} />
           </a>
         ) : (
-          <div className="mt-4 rounded-full bg-slate-100 px-4 py-2.5 text-center text-xs font-medium text-slate-400">
+          <div className="mt-4 rounded-full bg-[#F4F4ED] px-4 py-2.5 text-center text-xs font-medium text-[#858B80]">
             Tautan produk belum tersedia
           </div>
         )}
 
         {product.marketplace && (
-          <p className="mt-2 text-center text-[10px] text-slate-400">
+          <p className="mt-2 text-center text-[10px] text-[#858B80]">
             Tersedia di {product.marketplace}
           </p>
         )}
@@ -235,12 +240,12 @@ function ProductCarousel({ products }: { products: ProductRecommendation[] }) {
 
   if (products.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-violet-200 bg-violet-50/50 p-6 text-center">
-        <ShoppingBag className="mx-auto mb-3 text-violet-400" size={30} />
-        <p className="text-sm font-semibold text-ink">
+      <div className="rounded-2xl border border-dashed border-[#C5C8BF] bg-[#F4F4ED] p-6 text-center">
+        <ShoppingBag className="mx-auto mb-3 text-[#788873]" size={30} />
+        <p className="text-sm font-semibold text-[#1A1C18]">
           Belum ada produk yang sesuai
         </p>
-        <p className="mt-2 text-xs leading-5 text-slate-500">
+        <p className="mt-2 text-xs leading-5 text-[#6D7269]">
           Belum ditemukan produk dalam katalog yang cocok dengan rekomendasi
           kandungan dari hasil analisis.
         </p>
@@ -252,20 +257,6 @@ function ProductCarousel({ products }: { products: ProductRecommendation[] }) {
     <div>
       {/* HEADER */}
       <div className="mb-5 flex items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <ShoppingBag className="text-violet-600" size={20} />
-            <h3 className="font-semibold text-ink">
-              Rekomendasi Produk Skincare
-            </h3>
-          </div>
-
-          <p className="mt-2 text-xs leading-5 text-slate-500">
-            Produk dipilih berdasarkan kecocokan kandungan dengan rekomendasi
-            perawatan dan jenis kulitmu.
-          </p>
-        </div>
-
         {/* NAVIGATION */}
         {products.length > 3 && (
           <div className="flex shrink-0 items-center gap-2">
@@ -273,7 +264,7 @@ function ProductCarousel({ products }: { products: ProductRecommendation[] }) {
               type="button"
               onClick={() => scrollCarousel("left")}
               aria-label="Produk sebelumnya"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-200 text-violet-600 transition hover:bg-violet-50"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#DDE3D8] text-[#566251] transition hover:bg-[#F4F4ED]"
             >
               <ChevronLeft size={18} />
             </button>
@@ -282,7 +273,7 @@ function ProductCarousel({ products }: { products: ProductRecommendation[] }) {
               type="button"
               onClick={() => scrollCarousel("right")}
               aria-label="Produk berikutnya"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-200 text-violet-600 transition hover:bg-violet-50"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#DDE3D8] text-[#566251] transition hover:bg-[#F4F4ED]"
             >
               <ChevronRight size={18} />
             </button>
@@ -602,8 +593,11 @@ export default function SkinScanner() {
   ];
 
   return (
-    <section id="scanner" className="scroll-mt-24 bg-[#f5f3ff] py-20">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+    <section
+      id="scanner"
+      className="scroll-mt-24 min-h-screen bg-[#FAFAF3] pb-24 pt-28"
+    >
+      <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <span className="text-xs font-bold tracking-[.2em] text-violet">
             MULAI DARI SINI
@@ -620,79 +614,84 @@ export default function SkinScanner() {
         </div>
 
         <div
-          className={`mx-auto grid max-w-5xl gap-6 ${
+          className={`mx-auto grid max-w-6xl items-start gap-6 ${
             activeTab === "results"
               ? "grid-cols-1"
-              : "lg:grid-cols-[1.1fr_.9fr]"
+              : "grid-cols-1 lg:grid-cols-[1.55fr_0.85fr]"
           }`}
         >
-          <div className="rounded-3xl border border-white bg-white p-4 shadow-soft sm:p-6">
+          <div className="rounded-[28px] border border-[#E6E8DF] bg-white p-4 shadow-[0_12px_45px_rgba(50,60,45,0.06)] sm:p-7">
             {/* TAB NAVIGATION */}
-            <div className="mb-6 grid grid-cols-3 gap-2 rounded-xl bg-slate-100 p-1">
-              <button
-                type="button"
-                onClick={() => setActiveTab("photo")}
-                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
-                  activeTab === "photo"
-                    ? "bg-white text-violet shadow-sm"
-                    : "text-slate-500 hover:text-violet"
-                }`}
-              >
-                01. Scan Wajah
-              </button>
+            <div className="mb-8 grid grid-cols-3 gap-2 rounded-2xl bg-[#F4F4ED] p-2">
+              {[
+                { id: "photo", number: "01", label: "Scan Wajah" },
+                { id: "questionnaire", number: "02", label: "Kuesioner" },
+                { id: "results", number: "03", label: "Hasil Analisis" },
+              ].map((tab) => {
+                const isActive = activeTab === tab.id;
+                const isCompleted =
+                  (tab.id === "photo" && Boolean(validation?.valid)) ||
+                  (tab.id === "questionnaire" && Boolean(analysis));
 
-              <button
-                type="button"
-                disabled={!showQuestionnaire || !validation?.valid}
-                onClick={() => setActiveTab("questionnaire")}
-                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
-                  activeTab === "questionnaire"
-                    ? "bg-white text-violet shadow-sm"
-                    : "text-slate-500"
-                } disabled:cursor-not-allowed disabled:opacity-40`}
-              >
-                02. Kuesioner
-              </button>
+                const isDisabled =
+                  (tab.id === "questionnaire" &&
+                    (!showQuestionnaire || !validation?.valid)) ||
+                  (tab.id === "results" && !analysis && !analyzing);
 
-              <button
-                type="button"
-                disabled={!analysis && !analyzing}
-                onClick={() => setActiveTab("results")}
-                className={`rounded-lg px-2 py-3 text-xs font-semibold transition sm:text-sm ${
-                  activeTab === "results"
-                    ? "bg-white text-violet shadow-sm"
-                    : "text-slate-500"
-                } disabled:cursor-not-allowed disabled:opacity-40`}
-              >
-                03. Hasil
-              </button>
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    disabled={isDisabled}
+                    onClick={() => setActiveTab(tab.id as AnalysisTab)}
+                    className={`flex min-w-0 flex-row items-center justify-center gap-2 rounded-xl px-2 py-3 transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#566251] text-white shadow-sm"
+                        : "text-[#858B80] hover:bg-white hover:text-[#566251]"
+                    } disabled:cursor-not-allowed disabled:opacity-40`}
+                  >
+                    <span className="text-[10px] font-bold tracking-[0.12em]">
+                      {isCompleted && !isActive ? (
+                        <CheckCircle2 size={13} />
+                      ) : (
+                        tab.number
+                      )}
+                    </span>
+
+                    <span className="text-[10px] font-semibold sm:text-xs">
+                      {tab.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
+
             {activeTab === "photo" && (
               <>
                 {/* SCANNER */}
-                <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="text-sm font-semibold text-ink">
-                      Face scanner
+                    <p className="font-serif text-2xl font-medium text-[#1A1C18]">
+                      Mulai pemindaian
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Pilih metode pengambilan gambar
+                    <p className="mt-1 text-xs leading-5 text-[#858B80]">
+                      Ambil foto wajah atau pilih gambar dari perangkatmu.
                     </p>
                   </div>
 
-                  <span className="rounded-full bg-violet-50 px-3 py-1.5 text-[11px] font-semibold text-violet-700">
-                    Tahap 2 · Image Validation
+                  <span className="rounded-full border border-[#DDE3D8] bg-[#F4F4ED] px-3 py-1.5 text-[10px] font-semibold tracking-wide text-[#566251]">
+                    IMAGE VALIDATION
                   </span>
                 </div>
 
                 {/* MODE */}
-                <div className="mb-4 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
+                <div className="mb-4 grid grid-cols-2 gap-2 rounded-2xl bg-[#F4F4ED] p-1.5">
                   <button
                     onClick={() => changeMode("camera")}
-                    className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
+                    className={`flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all ${
                       mode === "camera"
-                        ? "bg-white text-violet shadow-sm"
-                        : "text-slate-500"
+                        ? "bg-white text-[#566251] shadow-sm"
+                        : "text-[#858B80] hover:bg-white/70 hover:text-[#566251]"
                     }`}
                   >
                     <Camera size={16} />
@@ -701,10 +700,10 @@ export default function SkinScanner() {
 
                   <button
                     onClick={() => changeMode("upload")}
-                    className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold ${
+                    className={`flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all ${
                       mode === "upload"
-                        ? "bg-white text-violet shadow-sm"
-                        : "text-slate-500"
+                        ? "bg-white text-[#566251] shadow-sm"
+                        : "text-[#858B80] hover:bg-white/70 hover:text-[#566251]"
                     }`}
                   >
                     <ImagePlus size={16} />
@@ -713,7 +712,7 @@ export default function SkinScanner() {
                 </div>
 
                 {/* IMAGE PREVIEW */}
-                <div className="relative grid min-h-[300px] place-items-center overflow-hidden rounded-2xl bg-[#17152b]">
+                <div className="relative grid min-h-[320px] place-items-center overflow-hidden rounded-[24px] border border-[#DDE3D8] bg-[#E9EDE5] sm:min-h-[390px]">
                   {preview ? (
                     <div className="absolute inset-0">
                       <img
@@ -761,39 +760,41 @@ export default function SkinScanner() {
                       />
 
                       {!streaming && (
-                        <div className="px-8 text-center text-white">
+                        <div className="px-8 text-center text-[#566251]">
                           <Camera
-                            className="mx-auto mb-3 text-violet-200"
-                            size={34}
+                            className="mx-auto mb-3 text-[#788873]"
+                            size={36}
                           />
 
                           <p className="font-semibold">
                             Kamera belum diaktifkan
                           </p>
 
-                          <p className="mt-2 text-xs leading-5 text-slate-300">
-                            Klik tombol Aktifkan kamera untuk memulai
-                            pemindaian.
+                          <p className="mt-2 text-xs leading-5 text-[#858B80]">
+                            Aktifkan kamera untuk mengambil foto wajah secara
+                            langsung.
                           </p>
                         </div>
                       )}
 
                       {streaming && (
-                        <div className="pointer-events-none absolute inset-[12%] rounded-[45%] border-2 border-dashed border-white/80" />
+                        <div className="pointer-events-none absolute inset-[12%] rounded-[45%] border border-dashed border-white/80 shadow-[0_0_0_999px_rgba(35,45,32,0.12)]" />
                       )}
                     </>
                   ) : (
                     <button
                       onClick={() => fileRef.current?.click()}
-                      className="m-5 flex min-h-[250px] w-[calc(100%-2.5rem)] flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/30 px-6 text-white hover:bg-white/5"
+                      className="m-5 flex min-h-[250px] w-[calc(100%-2.5rem)] flex-col items-center justify-center rounded-2xl border border-dashed border-[#A2AF9B] bg-white/50 px-6 text-[#566251] transition hover:bg-white"
                     >
-                      <Upload size={32} className="mb-3 text-violet-200" />
+                      <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-[#E8EDE5]">
+                        <Upload size={25} className="text-[#566251]" />
+                      </div>
 
-                      <span className="font-semibold">
+                      <span className="text-sm font-semibold">
                         Pilih foto dari perangkat
                       </span>
 
-                      <span className="mt-2 text-xs text-slate-300">
+                      <span className="mt-2 text-xs text-[#858B80]">
                         JPG, PNG, WEBP · Maksimal 8 MB
                       </span>
                     </button>
@@ -814,7 +815,7 @@ export default function SkinScanner() {
                     <button
                       onClick={reset}
                       disabled={validating}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink disabled:opacity-50"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full border border-[#DDE3D8] bg-white px-5 py-3 text-sm font-semibold text-[#566251] transition hover:bg-[#F4F4ED] disabled:opacity-50"
                     >
                       <RefreshCw size={16} />
                       Ambil ulang
@@ -823,7 +824,7 @@ export default function SkinScanner() {
                     !streaming ? (
                       <button
                         onClick={startCamera}
-                        className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                        className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#566251] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#414C3D] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         <Camera size={16} />
                         Aktifkan kamera
@@ -832,7 +833,7 @@ export default function SkinScanner() {
                       <>
                         <button
                           onClick={capture}
-                          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                          className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#566251] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#414C3D] disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <CheckCircle2 size={16} />
                           Ambil foto
@@ -840,7 +841,7 @@ export default function SkinScanner() {
 
                         <button
                           onClick={stopCamera}
-                          className="rounded-full border border-slate-200 px-4 py-3 text-sm font-semibold text-ink"
+                          className="flex items-center justify-center rounded-full border border-[#DDE3D8] bg-white px-4 py-3 text-[#566251] transition hover:bg-[#F4F4ED]"
                         >
                           <VideoOff size={16} />
                         </button>
@@ -849,7 +850,7 @@ export default function SkinScanner() {
                   ) : (
                     <button
                       onClick={() => fileRef.current?.click()}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-4 py-3 text-sm font-semibold text-white"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#566251] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#414C3D] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Upload size={16} />
                       Pilih gambar
@@ -863,7 +864,7 @@ export default function SkinScanner() {
                   className="mt-4 text-center text-xs leading-5 text-slate-500"
                 >
                   {validating ? (
-                    <span className="inline-flex items-center gap-2 text-violet-700">
+                    <span className="inline-flex items-center gap-2 text-[#566251]">
                       <LoaderCircle size={15} className="animate-spin" />
                       Sedang memeriksa kualitas foto...
                     </span>
@@ -880,7 +881,7 @@ export default function SkinScanner() {
 
                 {/* VALIDATION RESULT */}
                 {validation && !validating && (
-                  <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                  <div className="mt-5 rounded-2xl border border-[#E6E8DF] bg-[#FAFAF3] p-5">
                     <div className="flex items-center gap-2">
                       {validation.valid ? (
                         <CheckCircle2 className="text-green-600" size={20} />
@@ -946,8 +947,8 @@ export default function SkinScanner() {
                     )}
 
                     {validation.valid && (
-                      <div className="mt-4 rounded-xl bg-green-50 p-3">
-                        <p className="text-xs leading-5 text-green-700">
+                      <div className="mt-4 rounded-xl border border-[#DDE3D8] bg-[#E8EDE5] p-3">
+                        <p className="text-xs leading-5 text-[#566251]">
                           Foto berhasil melewati pemeriksaan kualitas. Silakan
                           lengkapi kuesioner untuk melanjutkan ke analisis
                           kulit.
@@ -958,43 +959,39 @@ export default function SkinScanner() {
                 )}
               </>
             )}
+
             {/* QUESTIONNAIRE */}
             {activeTab === "questionnaire" &&
               showQuestionnaire &&
               validation?.valid && (
-                <div className="mt-5 rounded-2xl border border-violet-100 bg-white p-5">
-                  <div className="mb-5">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="text-violet-600" size={20} />
-                      <h3 className="font-semibold text-ink">
-                        Kenali Kondisi Kulitmu
-                      </h3>
+                <div className="mt-5 rounded-[28px] border border-[#E6E8DF] bg-white p-5 shadow-[0_12px_45px_rgba(50,60,45,0.04)] sm:p-8">
+                  {/* KEBIASAAN */}
+                  <div className="mb-9">
+                    <div className="mb-4 flex items-start gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E8EDE5] text-xs font-bold text-[#566251]">
+                        01
+                      </span>
+
+                      <div>
+                        <h4 className="text-sm font-bold text-[#1A1C18] sm:text-base">
+                          Bagaimana kebiasaanmu sehari-hari?
+                        </h4>
+                        <p className="mt-1 text-xs leading-5 text-[#858B80]">
+                          Pilih semua kebiasaan yang sesuai dengan aktivitasmu.
+                        </p>
+                      </div>
                     </div>
 
-                    <p className="mt-2 text-xs leading-5 text-slate-500">
-                      Jawab beberapa pertanyaan berikut agar rekomendasi
-                      perawatan dapat disesuaikan dengan kebiasaan dan rutinitas
-                      skincare-mu.
-                    </p>
-                  </div>
-
-                  {/* KEBIASAAN */}
-                  <div className="mb-6">
-                    <h4 className="mb-3 text-sm font-semibold text-ink">
-                      1. Bagaimana kebiasaanmu sehari-hari?
-                    </h4>
-
-                    <p className="mb-3 text-xs text-slate-500">
-                      Pilih semua yang sesuai dengan kebiasaanmu.
-                    </p>
-
-                    <div className="space-y-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {[
                         {
                           value: "kurang_tidur",
                           label: "Sering tidur larut malam atau kurang tidur",
                         },
-                        { value: "stres", label: "Sering mengalami stres" },
+                        {
+                          value: "stres",
+                          label: "Sering mengalami stres",
+                        },
                         {
                           value: "paparan_matahari",
                           label: "Sering beraktivitas di bawah sinar matahari",
@@ -1011,72 +1008,109 @@ export default function SkinScanner() {
                           value: "kurang_minum_air",
                           label: "Kurang minum air putih",
                         },
-                      ].map((habit) => (
-                        <label
-                          key={habit.value}
-                          className="flex cursor-pointer items-start gap-3 text-sm text-slate-600"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={questionnaire.habits.includes(habit.value)}
-                            onChange={(event) => {
-                              setQuestionnaire((previous) => ({
-                                ...previous,
-                                habits: event.target.checked
-                                  ? [...previous.habits, habit.value]
-                                  : previous.habits.filter(
-                                      (item) => item !== habit.value,
-                                    ),
-                              }));
-                            }}
-                            className="mt-0.5 h-4 w-4 accent-violet-600"
-                          />
-                          <span>{habit.label}</span>
-                        </label>
-                      ))}
+                      ].map((habit) => {
+                        const isChecked = questionnaire.habits.includes(
+                          habit.value,
+                        );
+
+                        return (
+                          <label
+                            key={habit.value}
+                            className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 transition-all duration-200 ${
+                              isChecked
+                                ? "border-[#A2AF9B] bg-[#F0F3ED]"
+                                : "border-[#E6E8DF] bg-white hover:border-[#A2AF9B] hover:bg-[#FAFAF3]"
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(event) => {
+                                setQuestionnaire((previous) => ({
+                                  ...previous,
+                                  habits: event.target.checked
+                                    ? [...previous.habits, habit.value]
+                                    : previous.habits.filter(
+                                        (item) => item !== habit.value,
+                                      ),
+                                }));
+                              }}
+                              className="h-4 w-4 shrink-0 accent-[#566251]"
+                            />
+
+                            <span className="text-xs font-medium leading-5 text-[#444841] sm:text-sm">
+                              {habit.label}
+                            </span>
+                          </label>
+                        );
+                      })}
                     </div>
                   </div>
 
                   {/* JENIS KULIT */}
-                  <div className="mb-6">
-                    <h4 className="mb-3 text-sm font-semibold text-ink">
-                      2. Apa jenis kulitmu?
-                    </h4>
+                  <div className="mb-9">
+                    <div className="mb-4 flex items-start gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E8EDE5] text-xs font-bold text-[#566251]">
+                        02
+                      </span>
 
-                    <select
-                      value={questionnaire.skin_type}
-                      onChange={(event) =>
-                        setQuestionnaire((previous) => ({
-                          ...previous,
-                          skin_type: event.target.value,
-                        }))
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-violet-500"
-                    >
-                      <option value="unknown">
-                        Belum mengetahui jenis kulit
-                      </option>
-                      <option value="oily">Berminyak (Oily)</option>
-                      <option value="dry">Kering (Dry)</option>
-                      <option value="combination">
-                        Kombinasi (Combination)
-                      </option>
-                      <option value="sensitive">Sensitif (Sensitive)</option>
-                      <option value="normal">Normal</option>
-                    </select>
+                      <div>
+                        <h4 className="text-sm font-bold text-[#1A1C18] sm:text-base">
+                          Apa jenis kulitmu?
+                        </h4>
+                        <p className="mt-1 text-xs leading-5 text-[#858B80]">
+                          Pilih jenis kulit yang paling menggambarkan kondisi
+                          kulitmu.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        value={questionnaire.skin_type}
+                        onChange={(event) =>
+                          setQuestionnaire((previous) => ({
+                            ...previous,
+                            skin_type: event.target.value,
+                          }))
+                        }
+                        className="w-full appearance-none rounded-2xl border border-[#E6E8DF] bg-[#FAFAF3] px-4 py-4 pr-12 text-sm font-medium text-[#444841] outline-none transition focus:border-[#A2AF9B] focus:ring-2 focus:ring-[#A2AF9B]/20"
+                      >
+                        <option value="unknown">
+                          Belum mengetahui jenis kulit
+                        </option>
+                        <option value="oily">Berminyak (Oily)</option>
+                        <option value="dry">Kering (Dry)</option>
+                        <option value="combination">
+                          Kombinasi (Combination)
+                        </option>
+                        <option value="sensitive">Sensitif (Sensitive)</option>
+                        <option value="normal">Normal</option>
+                      </select>
+
+                      <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#788873]">
+                        <ChevronDown size={18} />
+                      </div>
+                    </div>
                   </div>
 
                   {/* PRODUK SKINCARE */}
-                  <div className="mb-6">
-                    <h4 className="mb-2 text-sm font-semibold text-ink">
-                      3. Produk skincare apa yang sedang kamu gunakan?
-                    </h4>
+                  <div className="mb-8">
+                    <div className="mb-4 flex items-start gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E8EDE5] text-xs font-bold text-[#566251]">
+                        03
+                      </span>
 
-                    <p className="mb-3 text-xs leading-5 text-slate-500">
-                      Tuliskan nama produk atau kandungan yang kamu gunakan.
-                      Contoh: Vitamin C serum, moisturizer, sunscreen, retinol,
-                      niacinamide, dan sebagainya.
-                    </p>
+                      <div>
+                        <h4 className="text-sm font-bold text-[#1A1C18] sm:text-base">
+                          Produk skincare apa yang sedang kamu gunakan?
+                        </h4>
+                        <p className="mt-1 text-xs leading-5 text-[#858B80]">
+                          Tuliskan nama produk atau kandungan skincare yang
+                          sedang kamu gunakan saat ini.
+                        </p>
+                      </div>
+                    </div>
 
                     <textarea
                       value={questionnaire.current_products}
@@ -1088,16 +1122,23 @@ export default function SkinScanner() {
                       }
                       rows={4}
                       placeholder="Contoh: Facial wash, moisturizer, Vitamin C serum, sunscreen SPF 50..."
-                      className="w-full resize-none rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-violet-500"
+                      className="w-full resize-none rounded-2xl border border-[#E6E8DF] bg-[#FAFAF3] px-4 py-4 text-sm leading-6 text-[#444841] outline-none transition placeholder:text-[#A2A69D] focus:border-[#A2AF9B] focus:ring-2 focus:ring-[#A2AF9B]/20"
                     />
+
+                    <p className="mt-2 text-[11px] leading-5 text-[#858B80]">
+                      Jika belum menggunakan skincare, kamu dapat membiarkan
+                      bagian ini kosong.
+                    </p>
                   </div>
 
-                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  {/* ACTION BUTTONS */}
+                  <div className="flex flex-col gap-3 border-t border-[#E6E8DF] pt-6 sm:flex-row">
                     <button
                       type="button"
                       onClick={() => setActiveTab("photo")}
-                      className="rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                      className="flex items-center justify-center gap-2 rounded-full border border-[#DDE3D8] bg-white px-6 py-3.5 text-sm font-semibold text-[#566251] transition hover:bg-[#F4F4ED]"
                     >
+                      <ArrowLeft size={16} />
                       Kembali ke Foto
                     </button>
 
@@ -1105,7 +1146,7 @@ export default function SkinScanner() {
                       type="button"
                       onClick={submitQuestionnaire}
                       disabled={analyzing}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#566251] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#465342] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {analyzing ? (
                         <>
@@ -1116,55 +1157,91 @@ export default function SkinScanner() {
                         <>
                           <Sparkles size={17} />
                           Mulai Analisis Kulit
+                          <ArrowRight size={16} />
                         </>
                       )}
                     </button>
                   </div>
 
-                  <p className="mt-3 text-center text-[11px] leading-5 text-slate-400">
-                    Jawaban digunakan untuk memberikan konteks rekomendasi
-                    perawatan dan bukan untuk menentukan diagnosis medis.
+                  <p className="mt-5 text-center text-[11px] leading-5 text-[#858B80]">
+                    Informasi yang diberikan digunakan sebagai konteks
+                    rekomendasi perawatan dan bukan untuk menentukan diagnosis
+                    medis.
                   </p>
                 </div>
               )}
 
-            {/* ANALYSIS RESULT */}
+            {/* ANALYSIS RESULT - LOADING */}
             {activeTab === "results" && analyzing && (
-              <div className="mt-5 rounded-2xl border border-violet-100 bg-violet-50 p-4">
-                <div className="flex items-center gap-3">
-                  <LoaderCircle
-                    className="animate-spin text-violet-600"
-                    size={20}
-                  />
-                  <div>
-                    <p className="text-sm font-semibold text-violet-900">
-                      AI sedang menganalisis kulit
-                    </p>
-                    <p className="mt-1 text-xs text-violet-700">
-                      Mohon tunggu, proses deteksi sedang berjalan.
-                    </p>
+              <div className="mt-6 rounded-[24px] border border-[#E6E8DF] bg-white px-6 py-12 sm:px-10">
+                <div className="mx-auto flex max-w-md flex-col items-center text-center">
+                  {/* LOADING ICON */}
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#F0F3ED]">
+                    <LoaderCircle
+                      className="animate-spin text-[#566251]"
+                      size={30}
+                      strokeWidth={1.5}
+                    />
                   </div>
+
+                  {/* LABEL */}
+                  <span className="mb-3 text-[10px] font-bold tracking-[0.2em] text-[#788873]">
+                    SKIN ANALYSIS IN PROGRESS
+                  </span>
+
+                  {/* TITLE */}
+                  <h3 className="font-serif text-2xl font-medium text-[#1A1C18] sm:text-3xl">
+                    Sedang mengenali
+                    <br />
+                    <span className="italic text-[#788873]">
+                      kondisi kulitmu.
+                    </span>
+                  </h3>
+
+                  {/* DESCRIPTION */}
+                  <p className="mt-4 max-w-sm text-sm leading-7 text-[#6D7269]">
+                    Skinova AI sedang memproses gambar wajah dan menganalisis
+                    karakteristik kulitmu. Mohon tunggu sebentar hingga hasil
+                    analisis selesai.
+                  </p>
+
+                  {/* PROGRESS DECORATION */}
+                  <div className="mt-8 h-1 w-full overflow-hidden rounded-full bg-[#E8E9E2]">
+                    <div className="h-full w-1/3 animate-pulse rounded-full bg-[#A2AF9B]" />
+                  </div>
+
+                  <p className="mt-3 text-[10px] font-semibold tracking-[0.12em] text-[#858B80]">
+                    PROCESSING YOUR SKIN DATA
+                  </p>
                 </div>
               </div>
             )}
 
+            {/* ANALYSIS RESULT */}
             {activeTab === "results" && analysis && (
               <div className="space-y-8">
-                {/* GRID HASIL ANALISIS */}
-                <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2">
-                  {/* KOLOM KIRI: HASIL ANALISIS + FOTO DETEKSI */}
-                  <div className="rounded-2xl border border-violet-100 bg-white p-5">
-                    {/* FOTO WAJAH DENGAN BOUNDING BOX YOLO */}
-                    <div className="mb-6">
-                      <div className="flex items-center gap-2 mb-6">
-                        <Sparkles className="text-violet-600" size={20} />
-                        <h3 className="font-semibold text-ink">
+                <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.3fr_0.85fr]">
+                  {/* LEFT COLUMN */}
+                  <div className="space-y-6">
+                    {/* FACE DETECTION */}
+                    <section className="rounded-[24px] border border-[#E6E8DF] bg-white p-5 sm:p-7">
+                      <div className="mb-5">
+                        <span className="text-[10px] font-bold tracking-[0.16em] text-[#788873]">
+                          VISUAL ANALYSIS
+                        </span>
+
+                        <h4 className="mt-2 font-serif text-2xl font-medium text-[#1A1C18]">
                           Hasil Deteksi Pada Wajah
-                        </h3>
+                        </h4>
+
+                        <p className="mt-2 text-xs leading-6 text-[#6D7269]">
+                          Visualisasi area kulit yang berhasil diidentifikasi
+                          oleh model deteksi Skinova AI.
+                        </p>
                       </div>
 
                       {preview && (
-                        <div className="relative mx-auto h-[360px] w-full max-w-md overflow-hidden rounded-2xl bg-[#17152b]">
+                        <div className="relative mx-auto aspect-square w-full max-w-[440px] overflow-hidden rounded-[18px] border border-[#E6E8DF] bg-[#F4F4ED]">
                           <img
                             src={preview}
                             alt="Foto wajah hasil analisis Skinova AI"
@@ -1186,8 +1263,8 @@ export default function SkinScanner() {
                                     y={box.y1}
                                     width={box.x2 - box.x1}
                                     height={box.y2 - box.y1}
-                                    fill="rgba(124, 58, 237, 0.12)"
-                                    stroke="#a78bfa"
+                                    fill="rgba(162, 175, 155, 0.16)"
+                                    stroke="#A2AF9B"
                                     strokeWidth="3"
                                     vectorEffect="non-scaling-stroke"
                                   />
@@ -1198,99 +1275,155 @@ export default function SkinScanner() {
                         </div>
                       )}
 
-                      <p className="mt-2 text-center text-xs text-slate-400">
-                        Area kotak menunjukkan lokasi kondisi kulit yang
-                        terdeteksi oleh AI.
-                      </p>
-                    </div>
-                    {/* JUDUL HASIL ANALISIS */}
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="text-violet-600" size={20} />
-                      <h3 className="font-semibold text-ink">
-                        Hasil Analisis Skinova AI
-                      </h3>
-                    </div>
-                    <div className="mt-4 grid grid-cols-2 gap-3">
-                      <div className="rounded-xl bg-violet-50 p-3">
-                        <p className="text-xs text-slate-500">Total deteksi</p>
-                        <p className="mt-1 text-2xl font-bold text-violet-700">
-                          {analysis.total_detections}
+                      <div className="mt-4 flex items-start gap-2 rounded-xl bg-[#F4F4ED] px-4 py-3">
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[#A2AF9B]" />
+                        <p className="text-xs leading-5 text-[#6D7269]">
+                          Area yang ditandai menunjukkan lokasi kondisi kulit
+                          yang terdeteksi oleh model AI.
                         </p>
                       </div>
+                    </section>
 
-                      <div className="rounded-xl bg-slate-50 p-3">
-                        <p className="text-xs text-slate-500">Perangkat AI</p>
-                        <p className="mt-1 text-lg font-bold text-ink">
-                          {analysis.device}
-                        </p>
+                    {/* ANALYSIS SUMMARY */}
+                    <section className="rounded-[24px] border border-[#E6E8DF] bg-white p-5 sm:p-7">
+                      <div className="mb-5">
+                        <span className="text-[10px] font-bold tracking-[0.16em] text-[#788873]">
+                          DETECTION SUMMARY
+                        </span>
+
+                        <h4 className="mt-2 font-serif text-2xl font-medium text-[#1A1C18]">
+                          Ringkasan Analisis
+                        </h4>
                       </div>
-                    </div>
-                    <div className="mt-5">
-                      <p className="mb-3 text-sm font-semibold text-ink">
-                        Kondisi kulit terdeteksi
-                      </p>
 
-                      {analysis.total_detections === 0 ? (
-                        <p className="rounded-xl bg-slate-50 p-4 text-xs leading-5 text-slate-600">
-                          Belum ditemukan objek yang terdeteksi oleh model AI.
-                          Hal ini tidak berarti kulit pasti bebas dari masalah.
-                        </p>
-                      ) : (
-                        <div className="space-y-3">
-                          {Object.entries(analysis.summary).map(
-                            ([name, data]) => (
-                              <div
-                                key={name}
-                                className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3"
-                              >
-                                <div>
-                                  <p className="text-sm font-semibold capitalize text-ink">
-                                    {name.replaceAll("_", " ")}
-                                  </p>
-                                  <p className="mt-1 text-xs text-slate-500">
-                                    {data.count} objek terdeteksi
-                                  </p>
-                                </div>
+                      {/* METRICS */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="rounded-2xl bg-[#F0F3ED] p-4">
+                          <p className="text-[10px] font-bold tracking-[0.12em] text-[#6D7269]">
+                            TOTAL DETEKSI
+                          </p>
 
-                                <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-                                  {(data.highest_confidence * 100).toFixed(1)}%
-                                </span>
-                              </div>
-                            ),
-                          )}
+                          <p className="mt-2 font-serif text-4xl text-[#566251]">
+                            {analysis.total_detections}
+                          </p>
+
+                          <p className="mt-1 text-[11px] text-[#858B80]">
+                            Objek teridentifikasi
+                          </p>
                         </div>
-                      )}
-                    </div>
+
+                        <div className="rounded-2xl bg-[#F4F4ED] p-4">
+                          <p className="text-[10px] font-bold tracking-[0.12em] text-[#6D7269]">
+                            PERANGKAT AI
+                          </p>
+
+                          <p className="mt-2 break-words font-serif text-2xl text-[#566251]">
+                            {analysis.device}
+                          </p>
+
+                          <p className="mt-1 text-[11px] text-[#858B80]">
+                            Detection model
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* DETECTED CONDITIONS */}
+                      <div className="mt-7">
+                        <div className="mb-4 flex items-center justify-between gap-3">
+                          <h5 className="text-sm font-bold text-[#1A1C18]">
+                            Kondisi kulit terdeteksi
+                          </h5>
+
+                          <span className="text-[10px] font-medium text-[#858B80]">
+                            AI DETECTION
+                          </span>
+                        </div>
+
+                        {analysis.total_detections === 0 ? (
+                          <div className="rounded-2xl border border-[#E6E8DF] bg-[#FAFAF3] p-5">
+                            <p className="text-sm font-semibold text-[#566251]">
+                              Belum ditemukan objek terdeteksi
+                            </p>
+
+                            <p className="mt-2 text-xs leading-6 text-[#6D7269]">
+                              Model AI belum menemukan objek yang dapat
+                              diidentifikasi pada gambar. Hal ini tidak berarti
+                              kulit pasti bebas dari masalah.
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {Object.entries(analysis.summary).map(
+                              ([name, data]) => (
+                                <div
+                                  key={name}
+                                  className="flex items-center justify-between gap-3 rounded-2xl border border-[#E6E8DF] bg-white p-4 transition-colors hover:bg-[#FAFAF3]"
+                                >
+                                  <div className="min-w-0">
+                                    <p className="text-sm font-semibold capitalize text-[#1A1C18]">
+                                      {name.replaceAll("_", " ")}
+                                    </p>
+
+                                    <p className="mt-1 text-xs text-[#858B80]">
+                                      {data.count} objek terdeteksi
+                                    </p>
+                                  </div>
+
+                                  <span className="shrink-0 rounded-full border border-[#DDE3D8] bg-[#F0F3ED] px-3 py-1.5 text-xs font-semibold tabular-nums text-[#566251]">
+                                    {(data.highest_confidence * 100).toFixed(1)}
+                                    %
+                                  </span>
+                                </div>
+                              ),
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </section>
+
                     {/* QUESTIONNAIRE PERSONALIZATION */}
                     {analysis.questionnaire_context && (
-                      <div className="mt-6 rounded-2xl border border-violet-100 bg-violet-50 p-4">
-                        <div className="flex items-center gap-2">
-                          <Sparkles size={18} className="text-violet-600" />
-                          <h4 className="text-sm font-semibold text-violet-900">
-                            Personalisasi Berdasarkan Kuesioner
+                      <section className="rounded-[24px] border border-[#E6E8DF] bg-white p-5 sm:p-7">
+                        <div className="mb-5">
+                          <span className="text-[10px] font-bold tracking-[0.16em] text-[#788873]">
+                            PERSONAL SKIN PROFILE
+                          </span>
+
+                          <h4 className="mt-2 font-serif text-2xl font-medium text-[#1A1C18]">
+                            Personalisasi Kulitmu
                           </h4>
+
+                          <p className="mt-2 text-xs leading-6 text-[#6D7269]">
+                            Informasi tambahan dari kuesioner yang digunakan
+                            sebagai konteks rekomendasi perawatan.
+                          </p>
                         </div>
 
-                        <div className="mt-3">
-                          <p className="text-xs text-slate-500">Jenis kulit</p>
-                          <p className="mt-1 text-sm font-semibold text-ink">
+                        {/* SKIN TYPE */}
+                        <div className="rounded-2xl bg-[#F4F4ED] p-4">
+                          <p className="text-[10px] font-bold tracking-[0.12em] text-[#788873]">
+                            JENIS KULIT
+                          </p>
+
+                          <p className="mt-2 font-serif text-2xl capitalize text-[#1A1C18]">
                             {analysis.questionnaire_context.skin_type}
                           </p>
                         </div>
 
+                        {/* EXISTING INGREDIENTS */}
                         {analysis.questionnaire_context.existing_ingredients
                           .length > 0 && (
-                          <div className="mt-3">
-                            <p className="text-xs text-slate-500">
+                          <div className="mt-5">
+                            <p className="mb-3 text-xs font-semibold text-[#444841]">
                               Kandungan yang sudah digunakan
                             </p>
 
-                            <div className="mt-2 flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2">
                               {analysis.questionnaire_context.existing_ingredients.map(
                                 (ingredient) => (
                                   <span
                                     key={ingredient}
-                                    className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-violet-700"
+                                    className="rounded-full border border-[#DDE3D8] bg-[#F4F4ED] px-3 py-2 text-xs font-medium text-[#566251]"
                                   >
                                     {ingredient}
                                   </span>
@@ -1300,47 +1433,50 @@ export default function SkinScanner() {
                           </div>
                         )}
 
-                        <div className="mt-4 space-y-2">
+                        {/* PERSONALIZATION NOTES */}
+                        <div className="mt-5 space-y-3">
                           {analysis.questionnaire_context.notes.map(
                             (note, index) => (
-                              <p
+                              <div
                                 key={index}
-                                className="flex gap-2 text-xs leading-5 text-slate-600"
+                                className="flex items-start gap-3"
                               >
                                 <CheckCircle2
-                                  size={15}
-                                  className="mt-0.5 shrink-0 text-violet-600"
+                                  size={16}
+                                  className="mt-0.5 shrink-0 text-[#788873]"
                                 />
-                                {note}
-                              </p>
+
+                                <p className="text-xs leading-6 text-[#6D7269]">
+                                  {note}
+                                </p>
+                              </div>
                             ),
                           )}
                         </div>
-                      </div>
+                      </section>
                     )}
                   </div>
-                  {/* KOLOM KANAN: REKOMENDASI PERAWATAN */}
-                  <div className="rounded-2xl border border-violet-100 bg-white p-5">
-                    {/* SKINCARE RECOMMENDATIONS */}
-                    {analysis.recommendations &&
-                      analysis.recommendations.length > 0 && (
-                        <div className="mt-6">
-                          <div className="mb-4">
-                            <div className="flex items-center gap-2">
-                              <Sparkles className="text-violet-600" size={20} />
 
-                              <h3 className="font-semibold text-ink">
-                                Rekomendasi Perawatan Kulit
-                              </h3>
-                            </div>
+                  {/* RIGHT COLUMN: RECOMMENDATIONS */}
+                  <div className="space-y-6">
+                    <section className="rounded-[24px] border border-[#E6E8DF] bg-white p-5 sm:p-7">
+                      <div className="mb-6">
+                        <span className="text-[10px] font-bold tracking-[0.16em] text-[#788873]">
+                          PERSONALIZED SKINCARE
+                        </span>
 
-                            <p className="mt-2 text-xs leading-5 text-slate-500">
-                              Rekomendasi berikut disesuaikan dengan kategori
-                              permasalahan kulit yang terdeteksi oleh Skinova
-                              AI.
-                            </p>
-                          </div>
+                        <h4 className="mt-2 font-serif text-2xl font-medium text-[#1A1C18]">
+                          Rekomendasi Perawatan
+                        </h4>
 
+                        <p className="mt-3 text-xs leading-6 text-[#6D7269]">
+                          Rekomendasi perawatan yang disesuaikan dengan kategori
+                          kondisi kulit yang terdeteksi oleh Skinova AI.
+                        </p>
+                      </div>
+
+                      {analysis.recommendations &&
+                        analysis.recommendations.length > 0 && (
                           <div className="space-y-4">
                             {analysis.recommendations.map((recommendation) => (
                               <RecommendationCard
@@ -1349,35 +1485,86 @@ export default function SkinScanner() {
                               />
                             ))}
                           </div>
+                        )}
+
+                      {(!analysis.recommendations ||
+                        analysis.recommendations.length === 0) && (
+                        <div className="rounded-2xl bg-[#F4F4ED] p-5">
+                          <p className="text-sm font-semibold text-[#566251]">
+                            Belum ada rekomendasi perawatan
+                          </p>
+
+                          <p className="mt-2 text-xs leading-6 text-[#6D7269]">
+                            Belum tersedia rekomendasi berdasarkan hasil deteksi
+                            pada gambar ini.
+                          </p>
                         </div>
                       )}
-                    <div className="mt-5 rounded-xl border border-amber-100 bg-amber-50 p-3">
-                      <p className="text-xs leading-5 text-amber-800">
-                        Hasil ini merupakan estimasi berdasarkan deteksi AI dan
-                        bukan diagnosis medis. Akurasi hasil masih perlu
-                        dievaluasi lebih lanjut.
+                    </section>
+
+                    {/* DISCLAIMER */}
+                    <section className="rounded-[24px] border border-[#E8DCCB] bg-[#F8F3EC] p-5 sm:p-6">
+                      <span className="text-[10px] font-bold tracking-[0.16em] text-[#8C4E2F]">
+                        IMPORTANT INFORMATION
+                      </span>
+
+                      <h5 className="mt-2 font-serif text-xl text-[#1A1C18]">
+                        Catatan Analisis
+                      </h5>
+
+                      <p className="mt-3 text-xs leading-6 text-[#665D51]">
+                        Hasil ini merupakan estimasi berdasarkan deteksi
+                        kecerdasan buatan dan bukan diagnosis medis. Akurasi
+                        hasil masih perlu dievaluasi lebih lanjut.
                       </p>
+                    </section>
+
+                    {/* MODEL INFORMATION */}
+                    <div className="flex items-center justify-between gap-3 border-t border-[#E6E8DF] px-1 pt-4">
+                      <span className="text-[10px] font-bold tracking-[0.12em] text-[#858B80]">
+                        ANALYSIS MODEL
+                      </span>
+
+                      <span className="text-xs font-medium text-[#566251]">
+                        {analysis.model}
+                      </span>
                     </div>
-                    <p className="mt-3 text-[11px] text-slate-400">
-                      Model: {analysis.model}
-                    </p>
                   </div>
                 </div>
-                {/* PRODUCT RECOMMENDATIONS - FULL WIDTH */}
-                <div className="mt-8 border-t border-slate-100 pt-7">
+
+                {/* PRODUCT RECOMMENDATIONS */}
+                <section className="border-t border-[#E6E8DF] pt-8">
+                  <div className="mb-6">
+                    <span className="text-[10px] font-bold tracking-[0.16em] text-[#788873]">
+                      CURATED FOR YOUR SKIN
+                    </span>
+
+                    <h4 className="mt-2 font-serif text-3xl font-medium text-[#1A1C18]">
+                      Produk untuk Kulitmu
+                    </h4>
+
+                    <p className="mt-2 max-w-xl text-sm leading-7 text-[#6D7269]">
+                      Pilihan produk skincare yang direkomendasikan berdasarkan
+                      hasil analisis dan kebutuhan kulitmu.
+                    </p>
+                  </div>
+
                   <ProductCarousel
                     products={analysis.product_recommendations ?? []}
                   />
-                  <div className="mt-6 flex flex-col gap-3">
+
+                  {/* RESET BUTTON */}
+                  <div className="mt-8 flex justify-center border-t border-[#E6E8DF] pt-7">
                     <button
                       type="button"
                       onClick={reset}
-                      className="w-full rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-[#566251] px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#465342] sm:w-auto"
                     >
+                      <Sparkles size={16} />
                       Analisis Ulang
                     </button>
                   </div>
-                </div>
+                </section>
               </div>
             )}
           </div>
@@ -1385,7 +1572,7 @@ export default function SkinScanner() {
           {/* RIGHT SIDEBAR */}
           {activeTab !== "results" && (
             <aside className="space-y-4">
-              <div className="rounded-3xl bg-white p-6 shadow-soft">
+              <div className="rounded-[22px] border border-[#E8DECF] bg-[#F6F0E7] p-5">
                 <h3 className="font-semibold text-ink">
                   Tips mendapatkan foto terbaik
                 </h3>
@@ -1414,7 +1601,7 @@ export default function SkinScanner() {
                     },
                   ].map((item) => (
                     <div key={item.n} className="flex gap-3">
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-lilac text-xs font-bold text-violet">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#E8EDE5] text-xs font-bold text-[#566251]">
                         {item.n}
                       </span>
 
@@ -1432,16 +1619,16 @@ export default function SkinScanner() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-amber-100 bg-amber-50 p-5">
+              <div className="rounded-[22px] border border-[#E8DECF] bg-[#F6F0E7] p-5">
                 <div className="flex gap-2">
-                  <ShieldAlert size={18} className="shrink-0 text-amber-700" />
+                  <ShieldAlert size={18} className="shrink-0 text-[#566251]" />
 
-                  <p className="text-sm font-semibold text-amber-900">
+                  <p className="text-sm font-semibold text-ink">
                     Perlu diketahui
                   </p>
                 </div>
 
-                <p className="mt-2 text-xs leading-6 text-amber-800">
+                <p className="mt-1 text-xs leading-5 text-slate-500">
                   Foto dikirim ke backend untuk pemeriksaan kualitas. Hasil
                   validasi hanya memeriksa kelayakan gambar, bukan mendiagnosis
                   kondisi kulit. Foto belum dianalisis oleh model AI.
@@ -1452,7 +1639,7 @@ export default function SkinScanner() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("questionnaire")}
-                  className="flex-1 rounded-full border border-violet-200 px-5 py-3 text-sm font-semibold text-violet-700 transition hover:bg-violet-50"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full border border-[#DDE3D8] bg-white px-5 py-3 text-sm font-semibold text-[#566251] transition hover:bg-[#F4F4ED] disabled:opacity-50"
                 >
                   Lihat Kuesioner
                 </button>
@@ -1460,7 +1647,7 @@ export default function SkinScanner() {
                 <button
                   type="button"
                   onClick={reset}
-                  className="flex-1 rounded-full bg-violet px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#566251] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#414C3D] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Analisis Ulang
                 </button>
