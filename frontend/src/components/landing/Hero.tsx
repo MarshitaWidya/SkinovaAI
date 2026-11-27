@@ -10,7 +10,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative mx-auto w-full max-w-7xl overflow-hidden px-6 py-12 lg:px-12 lg:py-24">
+    <section className="relative mx-auto w-full max-w-7xl min-h-screen overflow-hidden px-6 pb-12 lg:px-12 lg:pb-24 pt-28 md:pt-32 lg:pt-36">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16 lg:mt-5">
         {/* Left Column */}
         <div className="relative z-10 flex flex-col items-start space-y-8 lg:col-span-7">
@@ -70,8 +70,8 @@ export default function Hero() {
         </div>
 
         {/* Right Column: Editorial Portrait */}
-        <div className="relative lg:col-span-5">
-          <div className="relative mx-auto max-w-md lg:max-w-none">
+        <div className="relative lg:col-span-5 sm:display-none lg:block">
+          <div className="relative mx-auto max-w-md lg:max-w-none hidden lg:block">
             {/* Decorative Background */}
             <div className="pointer-events-none absolute -inset-4 -rotate-1 rounded-3xl bg-[#F4F4ED]" />
 

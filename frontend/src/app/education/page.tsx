@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
@@ -255,17 +256,7 @@ export default function EducationPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#EAE8E0] bg-[#F3F2ED] px-6 py-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
-          <p className="text-sm font-semibold tracking-wide text-[#566251]">
-            SKINOVA-AI
-          </p>
-
-          <p className="text-xs text-[#929287]">
-            © 2026 Skinova-AI. Learn, Understand, and Care for Your Skin.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

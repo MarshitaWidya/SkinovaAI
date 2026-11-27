@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -343,195 +344,198 @@ export default async function ArticleDetailPage({
     .filter((item): item is Article => Boolean(item));
 
   return (
-    <main className="min-h-screen bg-[#FAF9F6] text-[#292B27]">
-      {/* ARTICLE HEADER */}
-      <section className="px-5 pb-12 pt-10 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-4xl">
-          <Link
-            href="/education"
-            className="group inline-flex items-center gap-2 rounded-full border border-[#DADDD3] bg-white px-5 py-2.5 text-sm font-medium text-[#566251] shadow-sm transition-all duration-300 hover:border-[#566251] hover:bg-[#566251] hover:text-white"
-          >
-            <span className="transition-transform duration-300 group-hover:-translate-x-1">
-              ←
-            </span>
-            Kembali ke Edukasi
-          </Link>
+    <>
+      <main className="min-h-screen bg-[#FAF9F6] text-[#292B27]">
+        {/* ARTICLE HEADER */}
+        <section className="px-5 pb-12 pt-10 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-4xl">
+            <Link
+              href="/education"
+              className="group inline-flex items-center gap-2 rounded-full border border-[#DADDD3] bg-white px-5 py-2.5 mt-14 text-sm font-medium text-[#566251] shadow-sm transition-all duration-300 hover:border-[#566251] hover:bg-[#566251] hover:text-white"
+            >
+              <span className="transition-transform duration-300 group-hover:-translate-x-1">
+                ←
+              </span>
+              Kembali ke Edukasi
+            </Link>
 
-          <div className="mt-10">
-            <span className="inline-flex rounded-full bg-[#E8EDE3] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#566251]">
-              {article.category}
-            </span>
+            <div className="mt-10">
+              <span className="inline-flex rounded-full bg-[#E8EDE3] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#566251]">
+                {article.category}
+              </span>
 
-            <h1 className="mt-6 font-serif text-3xl font-medium leading-tight sm:text-4xl lg:text-5xl">
-              {article.title}
-            </h1>
+              <h1 className="mt-6 font-serif text-3xl font-medium leading-tight sm:text-4xl lg:text-5xl">
+                {article.title}
+              </h1>
 
-            <p className="mt-5 max-w-3xl text-base leading-8 text-[#77796F]">
-              {article.introduction}
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#77796F]">
+                {article.introduction}
+              </p>
+
+              <div className="mt-6 flex items-center gap-3 text-xs text-[#898B81]">
+                <span>Edukasi Skinova</span>
+                <span>•</span>
+                <span>{article.readTime} membaca</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ARTICLE CONTENT */}
+        <section className="px-5 pb-16 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-4xl">
+            {/* ARTICLE HERO IMAGE */}
+            <div className="mb-10 h-52 w-full overflow-hidden rounded-[2rem] bg-[#E8E8DF] sm:h-96 lg:h-[28rem]">
+              <img
+                src={article.image}
+                alt={`Foto ilustrasi ${article.title}`}
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+
+            <article className="rounded-3xl border border-[#E8E5DE] bg-white p-6 sm:p-10">
+              {article.sections.map((section, index) => (
+                <section
+                  key={index}
+                  className={
+                    index === 0 ? "" : "mt-10 border-t border-[#F0EEE8] pt-8"
+                  }
+                >
+                  <h2 className="font-serif text-2xl font-semibold text-[#414B3D]">
+                    {section.heading}
+                  </h2>
+
+                  {section.paragraphs.map((paragraph, paragraphIndex) => (
+                    <p
+                      key={paragraphIndex}
+                      className="mt-4 text-sm leading-8 text-[#686B62] sm:text-base"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+
+                  {section.points && (
+                    <ul className="mt-5 space-y-3">
+                      {section.points.map((point, pointIndex) => (
+                        <li
+                          key={pointIndex}
+                          className="flex gap-3 text-sm leading-7 text-[#686B62] sm:text-base"
+                        >
+                          <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#89977D]" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
+            </article>
+          </div>
+        </section>
+
+        {/* RELATED ARTICLES */}
+        <section className="bg-[#F0F0E9] px-5 py-14 sm:px-8 lg:px-16 lg:py-20">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#89917E]">
+              Rekomendasi Untuk Anda
             </p>
 
-            <div className="mt-6 flex items-center gap-3 text-xs text-[#898B81]">
-              <span>Edukasi Skinova</span>
-              <span>•</span>
-              <span>{article.readTime} membaca</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ARTICLE CONTENT */}
-      <section className="px-5 pb-16 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-4xl">
-          {/* ARTICLE HERO IMAGE */}
-          <div className="mb-10 h-52 w-full overflow-hidden rounded-[2rem] bg-[#E8E8DF] sm:h-96 lg:h-[28rem]">
-            <img
-              src={article.image}
-              alt={`Foto ilustrasi ${article.title}`}
-              className="h-full w-full object-cover object-center"
-            />
-          </div>
-
-          <article className="rounded-3xl border border-[#E8E5DE] bg-white p-6 sm:p-10">
-            {article.sections.map((section, index) => (
-              <section
-                key={index}
-                className={
-                  index === 0 ? "" : "mt-10 border-t border-[#F0EEE8] pt-8"
-                }
-              >
-                <h2 className="font-serif text-2xl font-semibold text-[#414B3D]">
-                  {section.heading}
-                </h2>
-
-                {section.paragraphs.map((paragraph, paragraphIndex) => (
-                  <p
-                    key={paragraphIndex}
-                    className="mt-4 text-sm leading-8 text-[#686B62] sm:text-base"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-
-                {section.points && (
-                  <ul className="mt-5 space-y-3">
-                    {section.points.map((point, pointIndex) => (
-                      <li
-                        key={pointIndex}
-                        className="flex gap-3 text-sm leading-7 text-[#686B62] sm:text-base"
-                      >
-                        <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#89977D]" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
-          </article>
-        </div>
-      </section>
-
-      {/* RELATED ARTICLES */}
-      <section className="bg-[#F0F0E9] px-5 py-14 sm:px-8 lg:px-16 lg:py-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#89917E]">
-            Rekomendasi Untuk Anda
-          </p>
-
-          <h2 className="mt-2 font-serif text-3xl sm:text-4xl">
-            Rekomendasi Artikel Terkait
-          </h2>
-
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[#77796F]">
-            Pelajari topik lainnya untuk memperluas pemahamanmu tentang
-            kesehatan dan perawatan kulit.
-          </p>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {relatedArticles.map((related) => (
-              <Link
-                key={related.slug}
-                href={`/education/${related.slug}`}
-                className="group rounded-3xl border border-[#E1DED6] bg-white p-6 transition hover:-translate-y-1 hover:shadow-md"
-              >
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#89917E]">
-                  {related.category}
-                </span>
-
-                <h3 className="mt-3 text-lg font-semibold leading-7 text-[#292B27] transition group-hover:text-[#68735E]">
-                  {related.title}
-                </h3>
-
-                <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-[#566251]">
-                  Baca Selengkapnya
-                  <span className="transition group-hover:translate-x-1">
-                    →
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* AI ANALYSIS CTA */}
-      <section className="px-5 py-14 sm:px-8 lg:px-16 lg:py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="overflow-hidden rounded-[2rem] bg-[#566251] px-7 py-10 text-white sm:px-12 sm:py-14 lg:px-16">
-            <div className="grid items-center gap-8 lg:grid-cols-2">
-              <div>
-                <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#E2E8DD]">
-                  Personalisasi AI Skinova
-                </span>
-
-                <h2 className="mt-5 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">
-                  Ingin Mengenal Kondisi Kulitmu Lebih Jauh?
-                </h2>
-
-                <p className="mt-5 max-w-xl text-sm leading-7 text-white/75 sm:text-base">
-                  Coba fitur analisis kulit Skinova AI untuk memperoleh
-                  informasi awal mengenai kondisi kulit dan rekomendasi
-                  perawatan yang relevan.
-                </p>
-              </div>
-
-              <div className="flex flex-col items-start gap-4 lg:items-end">
-                <Link
-                  href="/analysis"
-                  className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#E5E9DE] px-7 py-4 text-sm font-semibold text-[#414B3D] transition hover:bg-white sm:w-auto"
-                >
-                  Mulai Analisis Kulit
-                  <span>→</span>
-                </Link>
-
-                <p className="text-xs leading-6 text-white/60 lg:text-right">
-                  Hasil analisis AI bersifat informatif dan bukan diagnosis
-                  medis.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MEDICAL NOTICE */}
-      <section className="px-5 pb-14 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="rounded-2xl border border-[#E5DFD3] bg-[#F3EFE7] p-6 sm:p-8">
-            <h2 className="text-sm font-semibold text-[#514A3E]">
-              Pemberitahuan Medis
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl">
+              Rekomendasi Artikel Terkait
             </h2>
 
-            <p className="mt-2 text-sm leading-7 text-[#756F63]">
-              Artikel ini ditujukan untuk edukasi dan membantu pengguna memahami
-              perawatan kulit. Informasi di dalamnya bukan diagnosis medis dan
-              tidak menggantikan konsultasi dengan dokter kulit atau tenaga
-              medis profesional. Jika mengalami keluhan yang menetap atau
-              memburuk, konsultasikan dengan tenaga medis.
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#77796F]">
+              Pelajari topik lainnya untuk memperluas pemahamanmu tentang
+              kesehatan dan perawatan kulit.
             </p>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {relatedArticles.map((related) => (
+                <Link
+                  key={related.slug}
+                  href={`/education/${related.slug}`}
+                  className="group rounded-3xl border border-[#E1DED6] bg-white p-6 transition hover:-translate-y-1 hover:shadow-md"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#89917E]">
+                    {related.category}
+                  </span>
+
+                  <h3 className="mt-3 text-lg font-semibold leading-7 text-[#292B27] transition group-hover:text-[#68735E]">
+                    {related.title}
+                  </h3>
+
+                  <div className="mt-5 flex items-center gap-2 text-sm font-semibold text-[#566251]">
+                    Baca Selengkapnya
+                    <span className="transition group-hover:translate-x-1">
+                      →
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+
+        {/* AI ANALYSIS CTA */}
+        <section className="px-5 py-14 sm:px-8 lg:px-16 lg:py-20">
+          <div className="mx-auto max-w-7xl">
+            <div className="overflow-hidden rounded-[2rem] bg-[#566251] px-7 py-10 text-white sm:px-12 sm:py-14 lg:px-16">
+              <div className="grid items-center gap-8 lg:grid-cols-2">
+                <div>
+                  <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#E2E8DD]">
+                    Personalisasi AI Skinova
+                  </span>
+
+                  <h2 className="mt-5 max-w-xl font-serif text-3xl leading-tight sm:text-4xl">
+                    Ingin Mengenal Kondisi Kulitmu Lebih Jauh?
+                  </h2>
+
+                  <p className="mt-5 max-w-xl text-sm leading-7 text-white/75 sm:text-base">
+                    Coba fitur analisis kulit Skinova AI untuk memperoleh
+                    informasi awal mengenai kondisi kulit dan rekomendasi
+                    perawatan yang relevan.
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-start gap-4 lg:items-end">
+                  <Link
+                    href="/analysis"
+                    className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#E5E9DE] px-7 py-4 text-sm font-semibold text-[#414B3D] transition hover:bg-white sm:w-auto"
+                  >
+                    Mulai Analisis Kulit
+                    <span>→</span>
+                  </Link>
+
+                  <p className="text-xs leading-6 text-white/60 lg:text-right">
+                    Hasil analisis AI bersifat informatif dan bukan diagnosis
+                    medis.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* MEDICAL NOTICE */}
+        <section className="px-5 pb-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-2xl border border-[#E5DFD3] bg-[#F3EFE7] p-6 sm:p-8">
+              <h2 className="text-sm font-semibold text-[#514A3E]">
+                Pemberitahuan Medis
+              </h2>
+
+              <p className="mt-2 text-sm leading-7 text-[#756F63]">
+                Artikel ini ditujukan untuk edukasi dan membantu pengguna
+                memahami perawatan kulit. Informasi di dalamnya bukan diagnosis
+                medis dan tidak menggantikan konsultasi dengan dokter kulit atau
+                tenaga medis profesional. Jika mengalami keluhan yang menetap
+                atau memburuk, konsultasikan dengan tenaga medis.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
