@@ -26,7 +26,7 @@ export default function CTA() {
 
           <div className="pt-2">
             <a
-              href="#scanner"
+              href="/analysis"
               className="inline-flex items-center gap-3 rounded-full bg-[#566251] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-[#3E4A3A] hover:shadow-md"
             >
               <span>Mulai Analisis Sekarang</span>

@@ -1,39 +1,45 @@
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Search, ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
+
+const categories = [
+  { id: "Semua", label: "Semua Artikel" },
+  { id: "Dasar Skincare", label: "Dasar Skincare" },
+  { id: "Bahan Aktif", label: "Bahan Aktif" },
+  { id: "Masalah Kulit", label: "Masalah Kulit" },
+  { id: "Perawatan Kulit", label: "Perawatan Kulit" },
+];
+
 const articles = [
   {
-    category: "Skin Concerns",
-    readTime: "5 min read",
-    title: "Mengenal Lima Permasalahan Kulit yang Umum",
+    slug: "jenis-permasalahan-kulit",
+    title: "Mengenal Jenis dan Permasalahan Kulit Wajah",
+    category: "Masalah Kulit",
+    readTime: "5 menit membaca",
     description:
-      "Panduan komprehensif mengidentifikasi perbedaan jerawat papula, komedo tertutup, dan hiperpigmentasi pasca inflamasi.",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCosKTGqr0wnA6IuC5vFvoXrv8PGJxf0SIlzMBkLVY7d7nUM_GDNbCu5e_M_t5xXD68rUwaO3Mu3yYfWBM0rJ5V7Xyu0Y0Ge-O0pF89Ym_l0WwJDZop_ts--e7Plx_UzrhCinaGr7_zCzn7yPVxExLywH86lOajNPqeB7Ys8I6iw-eY_83t5fgr8ggtjD8Wzw3qpZQZ8NS4yx_-6yRedpgTVQnWun_eFJxkg8c_k7iw",
+      "Kenali berbagai jenis kulit wajah dan permasalahan yang sering terjadi agar kamu dapat menentukan perawatan yang tepat.",
+    image: "/image_edukasi/perawatan_kulit.jpg",
+    imageAlt: "Ilustrasi permasalahan kulit wajah",
   },
   {
-    category: "Ingredients",
-    readTime: "7 min read",
-    title: "Memahami Kandungan Aktif dalam Skincare",
+    slug: "salicylic-acid",
+    title: "Salicylic Acid: Manfaat untuk Kulit Berjerawat",
+    category: "Bahan Aktif",
+    readTime: "4 menit membaca",
     description:
-      "Eksplorasi fungsi Niacinamide, Salicylic Acid, dan Retinoid: dosis ideal dan cara kerja biologis pada stratum corneum.",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBn1kFRBjuF0ymPZRfdRKj83wvq358IIA68gCzriNJ-Jer37myCMaOI08lwRf9jsp0R_VzMH6Kocjz__bX6hSrGy-iKREPW5BJbXECS2LDr6DIUnbztNtiU_k0kO6zCaWValFfdUXZdDnqzRYlM-2LY-t6b2hKQTYn96lfNBTfX7EJoPIK4-RZYVfPBgWrh3pHSzODr2LHtRhYMsBbz5f_6M5CzAu6j3HrdwoGKe6ED",
+      "Pelajari cara kerja Salicylic Acid dalam membantu membersihkan pori-pori dan merawat kulit yang rentan berjerawat.",
+    image: "/image_edukasi/salicylic_acid.jpg",
+    imageAlt: "Serum Salicylic Acid dengan latar beige",
   },
   {
-    category: "Skin Health",
-    readTime: "4 min read",
-    title: "Cara Menjaga Skin Barrier Tetap Utuh",
+    slug: "basic-skincare",
+    title: "Basic Skincare: Langkah Awal Merawat Kulit",
+    category: "Dasar Skincare",
+    readTime: "6 menit membaca",
     description:
-      "Tanda-tanda kerusakan barrier lipid, hidrasi mendalam dengan Ceramide, dan perlindungan dari transepidermal water loss.",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA6yVhBwxaYe5TVZY-os30X3tPVAhJjyq36fB8mMEhfKN-wtBxLNN7HurOvLQ3EE-wK_ZjtQkLN9ChTTKq-kZKFYCCkzxg_uLKieRNBRCrBboRo1x0U6DqgUuKTdRqPLQVfcomMMfl7jesiszLSWOCZvufk8u-LRLhG9-BXJTc9VEgFpVwxf4ePRNbMyAr1trVgWOmk9yK1BEVmMms5aPtA5s_ACRcZlVkHGSZscUnW",
-  },
-  {
-    category: "Routine",
-    readTime: "6 min read",
-    title: "Pentingnya Sunscreen dalam Rutinitas",
-    description:
-      "Perlindungan spektrum luas UVA/UVB dan peran penting tabir surya dalam pencegahan penuaan dini serta dark spots.",
-    image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuB2-AHUJpk87hSwCUrfSuq3KAGelJaCPQkcPWMRPxA6W0sEzKsAkwv-4V__Jmlx9frvLGy3Dkgj6AIzME1slDs-GDP5EUVvBDhpCXJSsAu-A40av-TSC6bP5Tp-IRbMk3zx1QXwEbJ0IuTNXSy4XX9AVAQLnFl5DkppUVgGcF6EvSG-kdd0RnSzZic0I5g2o5ziqPaV1fLQ3R833uLrNw48nZy0j7FGl3q1svoqOEC5",
+      "Pahami tiga langkah dasar skincare yang penting untuk menjaga kebersihan dan kesehatan kulit wajah.",
+    image: "/image_edukasi/dasar_skincare.jpg",
+    imageAlt: "Rangkaian produk basic skincare",
   },
 ];
 
@@ -57,57 +63,59 @@ export default function DermatologyKnowledge() {
           </div>
 
           <span className="text-xs font-semibold uppercase tracking-widest text-[#7A8075]">
-            4 Topik Pilihan
+            3 Topik Pilihan
           </span>
         </div>
 
         {/* Article Cards */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
-            <article
-              key={article.title}
-              className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+            <Link
+              key={article.slug}
+              href={`/education/${article.slug}`}
+              className="group overflow-hidden rounded-2xl border border-[#EAE8E0] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#454D3C]/5"
             >
-              <div>
-                {/* Article Image */}
-                <div className="aspect-[16/10] w-full overflow-hidden bg-[#EEEFE8]">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Article Content */}
-                <div className="space-y-3 p-6">
-                  <div className="flex items-center justify-between gap-2 text-xs text-[#777D73]">
-                    <span className="rounded bg-[#EEEFE8] px-2 py-1 font-medium text-[#444841]">
-                      {article.category}
-                    </span>
-
-                    <span className="whitespace-nowrap">
-                      {article.readTime}
-                    </span>
-                  </div>
-
-                  <h3 className="font-['Newsreader'] text-xl leading-snug text-[#1A1C18]">
-                    {article.title}
-                  </h3>
-
-                  <p className="line-clamp-3 text-sm leading-6 text-[#666D63]">
-                    {article.description}
-                  </p>
-                </div>
+              {/* IMAGE */}
+              <div className="aspect-[16/10] overflow-hidden bg-[#EEEDE7]">
+                <img
+                  src={article.image}
+                  alt={article.imageAlt}
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                />
               </div>
 
-              {/* Non-clickable article indicator */}
-              <div className="px-6 pb-6 pt-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#566251]">
-                  Artikel Pilihan
-                </span>
+              {/* CONTENT */}
+              <div className="p-6">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-[#EEF0E9] px-3 py-1.5 text-xs font-medium text-[#69755F]">
+                    {article.category}
+                  </span>
+
+                  <span className="flex shrink-0 items-center gap-1.5 text-xs text-[#96968D]">
+                    <Clock3 size={13} />
+                    {article.readTime}
+                  </span>
+                </div>
+
+                <h3 className="text-lg font-semibold leading-snug text-[#30372D] transition group-hover:text-[#75836C]">
+                  {article.title}
+                </h3>
+
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#85867D]">
+                  {article.description}
+                </p>
+
+                <div className="mt-6 flex items-center justify-between border-t border-[#F0EFE9] pt-4">
+                  <span className="text-sm font-medium text-[#68745F]">
+                    Baca selengkapnya
+                  </span>
+
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F1F2EC] text-[#68745F] transition group-hover:bg-[#566251] group-hover:text-white">
+                    <ArrowUpRight size={17} />
+                  </span>
+                </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

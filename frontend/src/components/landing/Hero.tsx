@@ -31,7 +31,7 @@ export default function Hero() {
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a
-              href="#scanner"
+              href="/analysis"
               className="inline-flex items-center justify-center gap-3 rounded-full bg-[#566251] px-8 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:opacity-90"
             >
               <span>Mulai Analisis Kulit</span>
