@@ -1,16 +1,26 @@
 
 import json
 from pathlib import Path
+
 from app.models.product import SkincareProduct
 
 
 # Lokasi file katalog produk
-DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "skincare_products.json"
+DATA_FILE = (
+    Path(__file__).resolve().parents[1]
+    / "data"
+    / "skincare_products.json"
+)
 
 
 def normalize_text(value: str) -> str:
     """Menyeragamkan teks agar pencocokan lebih konsisten."""
-    return value.lower().strip().replace("_", " ").replace("-", " ")
+    return (
+        value.lower()
+        .strip()
+        .replace("_", " ")
+        .replace("-", " ")
+    )
 
 
 def load_skincare_products() -> list[SkincareProduct]:
@@ -29,9 +39,10 @@ def load_skincare_products() -> list[SkincareProduct]:
 
         for item in products_data:
             try:
-                products.append(SkincareProduct.model_validate(item))
+                products.append(
+                    SkincareProduct.model_validate(item)
+                )
             except Exception:
-                # Lewati data produk yang tidak sesuai struktur
                 continue
 
         return products
@@ -45,14 +56,28 @@ def get_product_recommendations(
     skin_type: str | None = None,
     limit: int = 6,
 ) -> list[dict]:
+    """
+    Merekomendasikan produk berdasarkan:
+    1. Kondisi kulit yang terdeteksi.
+    2. Kecocokan kandungan skincare.
+    3. Jenis kulit dari kuesioner.
+
+    Memprioritaskan agar setiap kondisi kulit
+    mendapatkan minimal satu rekomendasi produk
+    jika produk yang sesuai tersedia di katalog.
+    """
 
     products = load_skincare_products()
 
     if not products or not recommendations:
         return []
 
-    recommended_ingredients = set()
+    # ==========================================
+    # 1. KUMPULKAN KONDISI DAN KANDUNGAN
+    # ==========================================
+
     detected_conditions = set()
+    recommended_ingredients = set()
 
     for recommendation in recommendations:
         condition = normalize_text(
@@ -63,9 +88,16 @@ def get_product_recommendations(
             detected_conditions.add(condition)
 
         for ingredient in recommendation.get("ingredients", []):
-            recommended_ingredients.add(
-                normalize_text(ingredient)
-            )
+            normalized_ingredient = normalize_text(ingredient)
+
+            if normalized_ingredient:
+                recommended_ingredients.add(
+                    normalized_ingredient
+                )
+
+    # ==========================================
+    # 2. NORMALISASI JENIS KULIT
+    # ==========================================
 
     normalized_skin_type = (
         normalize_text(skin_type)
@@ -81,9 +113,18 @@ def get_product_recommendations(
         "normal",
     }
 
+    has_known_skin_type = (
+        normalized_skin_type in known_skin_types
+    )
+
+    # ==========================================
+    # 3. HITUNG KECocOKAN PRODUK
+    # ==========================================
+
     matched_products = []
 
     for product in products:
+
         if not product.is_active:
             continue
 
@@ -102,42 +143,54 @@ def get_product_recommendations(
             for value in product.skin_types
         }
 
-        # Cocokkan ingredients
+        # Kecocokan kandungan
         matched_ingredients = (
             recommended_ingredients & product_ingredients
         )
 
-        if not matched_ingredients:
-            continue
-
-        # Cocokkan kondisi kulit
+        # Kecocokan kondisi kulit
         matched_conditions = (
             detected_conditions & product_conditions
         )
 
-        # Periksa kesesuaian jenis kulit
+        # Produk harus cocok dengan kondisi
+        # atau setidaknya kandungan yang direkomendasikan.
+        if not matched_conditions and not matched_ingredients:
+            continue
+
+        # ======================================
+        # 4. PERIKSA JENIS KULIT
+        # ======================================
+
         skin_type_match = (
-            normalized_skin_type not in known_skin_types
+            not has_known_skin_type
             or normalized_skin_type in product_skin_types
             or "all" in product_skin_types
         )
 
-        # Jangan rekomendasikan produk yang tidak sesuai
-        # dengan jenis kulit yang diketahui.
+        # Jika jenis kulit diketahui dan produk
+        # tidak sesuai, jangan rekomendasikan.
         if not skin_type_match:
             continue
 
-        # Hitung skor kecocokan
+        # ======================================
+        # 5. HITUNG SKOR
+        # ======================================
+
         score = (
-            len(matched_ingredients) * 2
-            + len(matched_conditions) * 3
-            + (2 if skin_type_match else 0)
+            len(matched_conditions) * 10
+            + len(matched_ingredients) * 2
+            + (3 if has_known_skin_type and skin_type_match else 0)
         )
 
         product_data = product.model_dump()
 
         product_data["matching_ingredients"] = sorted(
-            matched_ingredients
+            [
+                ingredient
+                for ingredient in product.ingredients
+                if normalize_text(ingredient) in matched_ingredients
+            ]
         )
 
         product_data["matching_conditions"] = sorted(
@@ -148,97 +201,54 @@ def get_product_recommendations(
 
         matched_products.append(product_data)
 
-    # Urutkan dari kecocokan tertinggi
+    # ==========================================
+    # 6. URUTKAN PRODUK BERDASARKAN SKOR
+    # ==========================================
+
     matched_products.sort(
-        key=lambda item: item["match_score"],
+        key=lambda item: (
+            item["match_score"],
+            len(item["matching_conditions"]),
+            len(item["matching_ingredients"]),
+        ),
         reverse=True,
     )
 
-    return matched_products[:limit]
+    # ==========================================
+    # 7. PRIORITASKAN SETIAP KONDISI KULIT
+    # ==========================================
 
-    products = load_skincare_products()
+    selected_products = []
+    selected_ids = set()
 
-    if not products or not recommendations:
-        return []
+    # Ambil minimal satu produk terbaik
+    # untuk setiap kondisi yang terdeteksi.
+    for condition in sorted(detected_conditions):
 
-    # Mengumpulkan bahan aktif dan kondisi kulit dari hasil analisis
-    recommended_ingredients = set()
-    detected_conditions = set()
+        for product in matched_products:
 
-    for recommendation in recommendations:
-        condition = normalize_text(recommendation.get("title", ""))
+            if product["id"] in selected_ids:
+                continue
 
-        if condition:
-            detected_conditions.add(condition)
+            if condition in product["matching_conditions"]:
+                selected_products.append(product)
+                selected_ids.add(product["id"])
+                break
 
-        for ingredient in recommendation.get("ingredients", []):
-            recommended_ingredients.add(normalize_text(ingredient))
+    # ==========================================
+    # 8. TAMBAHKAN PRODUK TERBAIK LAINNYA
+    # ==========================================
 
-    normalized_skin_type = (
-        normalize_text(skin_type) if skin_type else None
-    )
+    for product in matched_products:
 
-    matched_products = []
-
-    for product in products:
-        if not product.is_active:
+        if product["id"] in selected_ids:
             continue
 
-        product_ingredients = {
-            normalize_text(ingredient)
-            for ingredient in product.ingredients
-        }
+        selected_products.append(product)
+        selected_ids.add(product["id"])
 
-        product_conditions = {
-            normalize_text(condition)
-            for condition in product.suitable_conditions
-        }
+    # Jika kondisi yang terdeteksi lebih banyak
+    # daripada limit, prioritaskan cakupan kondisi.
+    final_limit = max(limit, len(detected_conditions))
 
-        product_skin_types = {
-            normalize_text(value)
-            for value in product.skin_types
-        }
-
-        # Produk harus memiliki setidaknya satu bahan aktif relevan
-        matched_ingredients = (
-            recommended_ingredients & product_ingredients
-        )
-
-        if not matched_ingredients:
-            continue
-
-        # Hitung kecocokan kondisi kulit
-        matched_conditions = detected_conditions & product_conditions
-
-        # Jika jenis kulit diketahui, utamakan produk yang sesuai
-        skin_type_match = (
-            normalized_skin_type is None
-            or normalized_skin_type in product_skin_types
-            or "all" in product_skin_types
-        )
-
-        score = (
-            len(matched_ingredients) * 2
-            + len(matched_conditions) * 3
-            + (2 if skin_type_match else 0)
-        )
-
-        product_data = product.model_dump()
-
-        product_data["matching_ingredients"] = sorted(
-            matched_ingredients
-        )
-        product_data["matching_conditions"] = sorted(
-            matched_conditions
-        )
-        product_data["match_score"] = score
-
-        matched_products.append(product_data)
-
-    # Urutkan dari skor kecocokan tertinggi
-    matched_products.sort(
-        key=lambda item: item["match_score"],
-        reverse=True,
-    )
-
-    return matched_products[:limit]
+    return selected_products[:final_limit]

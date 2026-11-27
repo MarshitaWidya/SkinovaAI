@@ -58,12 +58,15 @@ RECOMMENDATIONS = {
         "title": "Wrinkles",
         "ingredients": ["Retinol", "Peptides"],
         "care_tips": [
-            "Gunakan pelembap secara rutin.",
-            "Gunakan sunscreen minimal SPF 30."
+            "Gunakan pelembap untuk menjaga hidrasi kulit.",
+            "Gunakan sunscreen minimal SPF 30 setiap pagi.",
+            "Gunakan retinol secara bertahap sesuai toleransi kulit.",
+            "Jaga kelembapan kulit untuk membantu mengurangi tampilan garis halus."
         ],
         "avoid": [
-            "Paparan sinar matahari tanpa perlindungan.",
-            "Penggunaan bahan aktif berlebihan."
+            "Penggunaan retinol berlebihan.",
+            "Menggabungkan terlalu banyak bahan aktif dalam satu rutinitas.",
+            "Paparan sinar matahari tanpa perlindungan."
         ]
     }
 }
